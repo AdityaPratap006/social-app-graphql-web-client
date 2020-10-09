@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import { AuthProvider } from './context/auth.context';
+import { AuthProvider } from './context/auth.context'
 
 ReactDOM.render(
   <React.StrictMode>

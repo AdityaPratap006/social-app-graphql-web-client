@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 import HomeScreen from "./screens/HomeScreen";
 import { AuthActionType, AuthContext } from './context/auth.context';
 import MainNavigation from "./navigation/MainNavigation";
@@ -59,6 +60,7 @@ const App: React.FC = () => {
 
   return (
     <React.Fragment>
+      <ToastContainer />
       <ApolloProvider client={client}>
         {
           authState.user

@@ -95,7 +95,7 @@ const Input: React.FC<InputProps> = (props) => {
                     placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={inputState.value}
+                    value={props.value || props.value === "" ? props.value : inputState.value}
                 />;
             break;
         case InputElement.INPUT:
@@ -107,7 +107,7 @@ const Input: React.FC<InputProps> = (props) => {
                     placeholder={props.placeholder}
                     onChange={changeHandler}
                     onBlur={touchHandler}
-                    value={inputState.value}
+                    value={props.value || props.value === "" ? props.value : inputState.value}
                     autoComplete={props.autoComplete}
                 />;
             break;
