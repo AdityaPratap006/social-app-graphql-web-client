@@ -1,0 +1,101 @@
+import { Link } from 'react-router-dom';
+import styled, { css } from 'styled-components';
+
+const buttonStyles = css`
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    border: 2px solid #ff0055;
+    border-radius: 4px;
+    background: #ff0055;
+    color: white;
+    cursor: pointer;
+    margin-right: 1rem;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 600;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:hover {
+        background: #ff4382;
+        border-color: 2px solid #ff4382;
+
+        &:disabled {
+            background: #ccc;
+            color: #979797;
+            border-color: #ccc;
+            cursor: not-allowed;
+        }
+    }
+
+    &:active {
+        background: #ff4382;
+        border-color: #ff4382;
+
+        &:disabled {
+            background: #ccc;
+            color: #979797;
+            border-color: #ccc;
+            cursor: not-allowed;
+        }
+    }
+
+    &:disabled {
+        background: #ccc;
+        color: #979797;
+        border-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    &.button--inverse {
+        background: transparent;
+        color: #ff0055;
+
+        &:hover {
+            color: white;
+            background: #ff0055;
+        }
+
+        &:active {
+            color: white;
+            background: #ff0055;
+        }
+    }
+
+    &.button--danger {
+        background: #830000;
+        border-color: #830000;
+
+        &:hover {
+            background: #f34343;
+            border-color: #f34343;
+        }
+
+        &:active {
+            background: #f34343;
+            border-color: #f34343;
+        }
+    }
+
+    &.button--small {
+        font-size: 0.8rem;
+    }
+
+    &.button--big {
+        font-size: 1.5rem;
+    }
+`;
+
+export const StyledButton = styled.button`
+    ${buttonStyles}
+`;
+
+export const StyledALink = styled.a`
+    ${buttonStyles}
+`;
+
+export const StyledRouteLink = styled(Link)`
+    ${buttonStyles}
+`;

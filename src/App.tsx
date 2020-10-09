@@ -1,8 +1,11 @@
 import React, { useCallback, useContext, useEffect } from "react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { Redirect, Route, Switch } from "react-router-dom";
 import HomeScreen from "./screens/HomeScreen";
 import { AuthActionType, AuthContext } from './context/auth.context';
 import MainNavigation from "./navigation/MainNavigation";
+import { NavigationRoutes } from './navigation/navRoutes';
+import RegisterScreen from "./screens/Auth/RegisterScreen";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -23,21 +26,50 @@ const App: React.FC = () => {
     });
   }, [authDispatch]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      updateUserName();
-    }, 2000);
-  }, [updateUserName]);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     updateUserName();
+  //   }, 2000);
+  // }, [updateUserName]);
 
   useEffect(() => {
     console.log(authState);
   }, [authState]);
 
+  const protectedRoutes = (
+    <Switch>
+      <Route exact path={`${NavigationRoutes.HOME}`} >
+        <HomeScreen />
+      </Route>
+      <Redirect to={`${NavigationRoutes.HOME}`} />
+    </Switch>
+  );
+
+  const authRoutes = (
+    <Switch>
+      <Route exact path={`${NavigationRoutes.LOGIN}`}>
+        <h1>LOGIN</h1>
+      </Route>
+      <Route exact path={`${NavigationRoutes.REGISTER}`}>
+        <RegisterScreen />
+      </Route>
+      <Redirect to={`${NavigationRoutes.LOGIN}`} />
+    </Switch>
+  );
+
   return (
     <React.Fragment>
       <ApolloProvider client={client}>
-        <MainNavigation />
-        <HomeScreen />
+        {
+          authState.user
+            ? (
+              <React.Fragment>
+                <MainNavigation />
+                {protectedRoutes}
+              </React.Fragment>
+            )
+            : authRoutes
+        }
       </ApolloProvider>
     </React.Fragment>
   );
