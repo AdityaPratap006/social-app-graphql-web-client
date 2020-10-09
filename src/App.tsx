@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect } from "react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import HomeScreen from "./screens/HomeScreen";
 import { AuthActionType, AuthContext } from './context/auth.context';
+import MainNavigation from "./navigation/MainNavigation";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -35,6 +36,7 @@ const App: React.FC = () => {
   return (
     <React.Fragment>
       <ApolloProvider client={client}>
+        <MainNavigation />
         <HomeScreen />
       </ApolloProvider>
     </React.Fragment>

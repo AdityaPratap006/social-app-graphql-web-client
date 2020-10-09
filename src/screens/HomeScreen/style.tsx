@@ -21,10 +21,15 @@ export const LoadingScreen = styled.div`
 `;
 
 export const PostGrid = styled.div`
-    width: 40rem;
+    padding: 1rem;
+    width: 35rem;
     max-width: 90vw;
     display: grid;
     gap: 20px;
     grid-template-columns: 1fr;
     grid-template-rows: repeat(auto, minmax(20rem, 1fr));
+
+    /* @media (max-width: 800px) {
+        grid-template-columns: 1fr;
+    } */
 `;
