@@ -1,5 +1,6 @@
-import React, { useReducer, createContext } from 'react';
+import React, { useReducer, createContext, useEffect } from 'react';
 import { IUser } from '../models';
+import { firebaseAuth } from '../utils/firebase';
 
 // state
 export interface AuthState {
@@ -52,6 +53,31 @@ interface AuthProviderProps {
 
 export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
     const [state, dispatch] = useReducer(authReducer, INITIAL_STATE);
+
+    useEffect(() => {
+        const unsubscribeAuth = firebaseAuth.onAuthStateChanged(async user => {
+            if (user) {
+                const idTokenResult = await user.getIdTokenResult();
+                dispatch({
+                    type: AuthActionType.LOGGED_IN_USER,
+                    payload: {
+                        name: user.displayName || '',
+                        email: user.email || '',
+                        token: idTokenResult.token,
+                    }
+                });
+            } else {
+                dispatch({
+                    type: AuthActionType.LOGGED_IN_USER,
+                    payload: undefined,
+                });
+            }
+        });
+
+        return () => {
+            unsubscribeAuth();
+        };
+    }, []);
 
     const value = { state, dispatch };
 

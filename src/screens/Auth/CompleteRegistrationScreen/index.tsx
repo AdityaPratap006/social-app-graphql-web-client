@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import { Screen, Layer, cardStyles } from './style';
 import Card from '../../../components/shared/Card';
 import Input from '../../../components/shared/FormElements/Input';
@@ -10,6 +11,7 @@ import Button from '../../../components/shared/FormElements/Button';
 import { firebaseAuth } from '../../../utils/firebase';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { NavigationRoutes } from '../../../navigation/navRoutes';
+import { AuthActionType, AuthContext } from '../../../context/auth.context';
 
 const INITIAL_STATE: FormState = {
     inputs: {
@@ -37,6 +39,7 @@ const CompleteRegistrationScreen = () => {
     const [formState, inputChangeHandler, setFormData] = useForm(INITIAL_STATE);
     const [loading, setLoading] = useState(false);
     const history = useHistory();
+    const auth = useContext(AuthContext);
 
     useEffect(() => {
         const storedEmail = window.localStorage.getItem('emailForRegistration');
@@ -52,11 +55,51 @@ const CompleteRegistrationScreen = () => {
 
     }, [history, setFormData]);
 
+    const formSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const { email, password, name } = formState.inputs;
+
+        setLoading(true);
+        try {
+            const result = await firebaseAuth.signInWithEmailLink(email.value as string, window.location.href);
+            // console.log(result);
+
+            if (result.user?.emailVerified) {
+                window.localStorage.removeItem('emailForRegistration');
+                const user = firebaseAuth.currentUser;
+                if (user) {
+                    await user.updatePassword(password.value as string);
+                    await user.updateProfile({ displayName: name.value as string });
+
+                    const idTokenResult = await user.getIdTokenResult();
+
+                    auth.dispatch({
+                        type: AuthActionType.LOGGED_IN_USER,
+                        payload: {
+                            name: user.displayName || '',
+                            email: user.email || '',
+                            token: idTokenResult.token,
+                        },
+                    });
+
+                }
+            }
+
+            setLoading(false);
+        } catch (err) {
+            console.log("Registration Incomplete! ", err.message, ": ", err);
+            setLoading(false);
+            toast.error(err.message);
+        }
+    }
+
     return (
         <Screen>
             <Layer />
             <Card addCSS={cardStyles}>
-                <form>
+                <h4>COMPLETE REGISTRATION</h4>
+                <form onSubmit={formSubmitHandler}>
                     <input
                         style={{
                             position: 'fixed',

@@ -54,6 +54,7 @@ const RegisterScreen = () => {
 
         } catch (err) {
             console.log(err.message, ": ", err);
+            toast.error(err.message);
         } finally {
             setLoading(false);
         }
