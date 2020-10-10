@@ -25,6 +25,10 @@ export const FormControl = styled.div`
             background: #ebebeb;
             border-color: #510077;
         }
+
+        &:disabled {
+            background: lightgray;
+        }
     }
 
     textarea {
@@ -49,6 +53,7 @@ export const FormControl = styled.div`
 
         p {
             color: red;
+            margin-top: 0.2rem;
         }
 
         input {

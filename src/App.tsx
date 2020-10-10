@@ -7,6 +7,7 @@ import { AuthActionType, AuthContext } from './context/auth.context';
 import MainNavigation from "./navigation/MainNavigation";
 import { NavigationRoutes } from './navigation/navRoutes';
 import RegisterScreen from "./screens/Auth/RegisterScreen";
+import CompleteRegistrationScreen from "./screens/Auth/CompleteRegistrationScreen";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -53,6 +54,9 @@ const App: React.FC = () => {
       </Route>
       <Route exact path={`${NavigationRoutes.REGISTER}`}>
         <RegisterScreen />
+      </Route>
+      <Route exact path={`${NavigationRoutes.COMPLETE_REGISTRATION}`}>
+        <CompleteRegistrationScreen />
       </Route>
       <Redirect to={`${NavigationRoutes.LOGIN}`} />
     </Switch>

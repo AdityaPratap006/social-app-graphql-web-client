@@ -6,11 +6,12 @@ export enum InputValidatorTypes {
     VALIDATOR_TYPE_MAX = 'MAX',
     VALIDATOR_TYPE_EMAIL = 'EMAIL',
     VALIDATOR_TYPE_FILE = 'FILE',
+    VALIDATOR_TYPE_VALUE = 'VALUE',
 }
 
 export interface InputValidator {
     type: InputValidatorTypes;
-    val?: number;
+    val?: number | string | boolean;
 }
 
 export const VALIDATOR_REQUIRE = () => ({ type: InputValidatorTypes.VALIDATOR_TYPE_REQUIRE });
@@ -26,6 +27,7 @@ export const VALIDATOR_MAXLENGTH = (val: number) => ({
 export const VALIDATOR_MIN = (val: number) => ({ type: InputValidatorTypes.VALIDATOR_TYPE_MIN, val: val });
 export const VALIDATOR_MAX = (val: number) => ({ type: InputValidatorTypes.VALIDATOR_TYPE_MAX, val: val });
 export const VALIDATOR_EMAIL = () => ({ type: InputValidatorTypes.VALIDATOR_TYPE_EMAIL });
+export const VALIDATOR_VALUE = (val: number | string | boolean) => ({ type: InputValidatorTypes.VALIDATOR_TYPE_VALUE, val: val });
 
 export const validate = (value: string, validators: InputValidator[]) => {
     let isValid = true;
@@ -51,6 +53,9 @@ export const validate = (value: string, validators: InputValidator[]) => {
         }
         if (validator.type === InputValidatorTypes.VALIDATOR_TYPE_EMAIL) {
             isValid = isValid && /^\S+@\S+\.\S+$/.test(value);
+        }
+        if (validator.type === InputValidatorTypes.VALIDATOR_TYPE_VALUE) {
+            isValid = isValid && value === validator.val
         }
     }
     return isValid;

@@ -3,4 +3,5 @@ export enum NavigationRoutes {
     LOGIN = `/auth/login`,
     REGISTER = `/auth/register`,
     CHATS = `/chats`,
+    COMPLETE_REGISTRATION = `/auth/complete-registration`,
 }

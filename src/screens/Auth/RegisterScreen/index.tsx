@@ -39,7 +39,7 @@ const RegisterScreen = () => {
             toast.success(`Registration Link sent to ${email}!`);
 
             // save email in local storage
-            window.localStorage.setItem('emailFormRegistration', email);
+            window.localStorage.setItem('emailForRegistration', email);
 
             // clear form state
             setFormData({
