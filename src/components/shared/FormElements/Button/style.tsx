@@ -1,5 +1,9 @@
 import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled, { css, FlattenSimpleInterpolation } from 'styled-components';
+
+interface StyledButtonProps {
+    addCSS?: FlattenSimpleInterpolation;
+}
 
 const buttonStyles = css`
     font: inherit;
@@ -88,14 +92,17 @@ const buttonStyles = css`
     }
 `;
 
-export const StyledButton = styled.button`
+export const StyledButton = styled.button<StyledButtonProps>`
     ${buttonStyles}
+    ${props => props.addCSS}
 `;
 
-export const StyledALink = styled.a`
+export const StyledALink = styled.a<StyledButtonProps>`
     ${buttonStyles}
+    ${props => props.addCSS}
 `;
 
-export const StyledRouteLink = styled(Link)`
+export const StyledRouteLink = styled(Link) <StyledButtonProps>`
     ${buttonStyles}
+    ${props => props.addCSS}
 `;

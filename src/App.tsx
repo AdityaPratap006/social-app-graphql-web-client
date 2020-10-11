@@ -22,6 +22,9 @@ const App: React.FC = () => {
       <Route exact path={`${NavigationRoutes.HOME}`} >
         <HomeScreen />
       </Route>
+      <Route exact path={`${NavigationRoutes.CHATS}`} >
+        <h1>Chats</h1>
+      </Route>
       <Redirect to={`${NavigationRoutes.HOME}`} />
     </Switch>
   );
@@ -50,7 +53,9 @@ const App: React.FC = () => {
             ? (
               <React.Fragment>
                 <MainNavigation />
-                {protectedRoutes}
+                <main className='main-container'>
+                  {protectedRoutes}
+                </main>
               </React.Fragment>
             )
             : authRoutes

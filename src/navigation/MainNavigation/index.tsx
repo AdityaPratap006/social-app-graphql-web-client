@@ -1,19 +1,34 @@
 import React from 'react';
-import { CenterNav, TopNavBarStyles, RightNav } from './style';
-import TopNavBar from '../TopNavBar';
+import { NavBody, NavFooter, SectionHeader, AccountSection, AccountIcon, LogoutButtonContainer, LogoutButtonStyles, AccountSectionContainer } from './style';
+import MainNavBar from '../MainNavBar';
 import MainNavLinks from '../MainNavLinks';
+import Button from '../../components/shared/FormElements/Button';
 
 const MainNavigation = () => {
     return (
         <React.Fragment>
-            <TopNavBar addCSS={TopNavBarStyles}>
-                <CenterNav>
+            <MainNavBar>
+                <NavBody>
                     <MainNavLinks />
-                </CenterNav>
-                <RightNav>
-                    <h4>Account</h4>
-                </RightNav>
-            </TopNavBar>
+                </NavBody>
+                <NavFooter>
+                    <SectionHeader>MY PROFILE</SectionHeader>
+                    <AccountSectionContainer>
+                        <AccountSection className="account-section">
+                            <AccountIcon />
+                            <div className="details">
+                                <span className="name">My Name</span>
+                                <span className="email">My @email</span>
+                            </div>
+                        </AccountSection>
+                    </AccountSectionContainer>
+                    <LogoutButtonContainer>
+                        <Button addCSS={LogoutButtonStyles}>
+                            LOGOUT
+                        </Button>
+                    </LogoutButtonContainer>
+                </NavFooter>
+            </MainNavBar>
         </React.Fragment>
     );
 };

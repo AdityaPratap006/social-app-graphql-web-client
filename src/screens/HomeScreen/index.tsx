@@ -4,6 +4,7 @@ import { gql, useQuery } from "@apollo/client";
 import { IPost } from "../../models";
 import PostCard from '../../components/post/PostCard';
 import ScreenTitle from '../../components/shared/ScreenTitle';
+import LoadingSpinner from '../../components/shared/LoadingSpinner';
 
 const GET_ALL_POSTS = gql`
     {
@@ -21,7 +22,7 @@ const HomeScreen: React.FC = () => {
     if (loading) {
         return (
             <LoadingScreen>
-                <h1>Loading...</h1>
+                <LoadingSpinner asOverlay />
             </LoadingScreen>
         );
     }

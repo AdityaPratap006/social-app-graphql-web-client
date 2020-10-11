@@ -1,18 +1,17 @@
 import styled from 'styled-components';
 
 export const Screen = styled.div`
-    min-height: 100vh;
+    min-height: calc(100vh - 4rem);
     width: 100vw;
     max-width: 100%;
-    padding: 1rem 0;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
 `;
 
 export const LoadingScreen = styled.div`
-    min-height: 100vh;
+    min-height: calc(100vh - 4rem);
     width: 100vw;
     max-width: 100%;
     display: flex;

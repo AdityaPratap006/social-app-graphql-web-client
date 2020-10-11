@@ -2,11 +2,11 @@ import React from 'react';
 import { FlattenSimpleInterpolation } from 'styled-components';
 import { Header } from './style';
 
-interface TopNavBarProps {
+interface MainNavBarProps {
     addCSS?: FlattenSimpleInterpolation;
 }
 
-const TopNavBar: React.FC<TopNavBarProps> = (props) => {
+const MainNavBar: React.FC<MainNavBarProps> = (props) => {
     return (
         <Header addCSS={props.addCSS}>
             {props.children}
@@ -14,4 +14,4 @@ const TopNavBar: React.FC<TopNavBarProps> = (props) => {
     );
 };
 
-export default TopNavBar;
+export default MainNavBar;
