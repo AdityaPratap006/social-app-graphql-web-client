@@ -7,7 +7,6 @@ interface HeaderProps {
 export const Header = styled.header<HeaderProps>`
     width: 25vw;
     height: 100vh;
-    padding-left: 3rem;
     display: flex;
     flex-direction: column;
     justify-content: center;

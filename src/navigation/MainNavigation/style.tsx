@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { MdAccountCircle } from 'react-icons/md';
 
 export const NavBody = styled.nav`
+    padding-left: 3rem;
     width: 100%;
     height: 50vh;
     display: flex;
@@ -11,12 +12,14 @@ export const NavBody = styled.nav`
 `;
 
 export const NavFooter = styled.nav`
+    padding-left: 3rem;
     width: 100%;
     height: 25vh;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
+    border-top: 1px solid lightgray;
 `;
 
 export const AccountSectionContainer = styled.div`

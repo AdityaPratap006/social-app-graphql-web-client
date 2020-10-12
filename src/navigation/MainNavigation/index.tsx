@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { NavBody, NavFooter, SectionHeader, AccountSection, AccountIcon, LogoutButtonContainer, LogoutButtonStyles, AccountSectionContainer } from './style';
 import MainNavBar from '../MainNavBar';
 import MainNavLinks from '../MainNavLinks';
 import Button from '../../components/shared/FormElements/Button';
+import { AuthActionType, AuthContext } from '../../context/auth.context';
+import { firebaseAuth } from '../../utils/firebase';
 
 const MainNavigation = () => {
+    const auth = useContext(AuthContext);
+
+    const logoutHandler = () => {
+        firebaseAuth.signOut();
+        auth.dispatch({
+            type: AuthActionType.LOGGED_IN_USER,
+            payload: undefined,
+        });
+    }
+
     return (
         <React.Fragment>
             <MainNavBar>
@@ -23,7 +35,7 @@ const MainNavigation = () => {
                         </AccountSection>
                     </AccountSectionContainer>
                     <LogoutButtonContainer>
-                        <Button addCSS={LogoutButtonStyles}>
+                        <Button onClick={logoutHandler} addCSS={LogoutButtonStyles}>
                             LOGOUT
                         </Button>
                     </LogoutButtonContainer>

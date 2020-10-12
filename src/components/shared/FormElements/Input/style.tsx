@@ -17,7 +17,7 @@ export const FormControl = styled.div`
         font: inherit;
         border: 1px solid #ccc;
         background: #f8f8f8;
-        padding: 0.15rem 0.25rem;
+        padding: 0.25rem;
         border-radius: 6px;
 
         &:focus {

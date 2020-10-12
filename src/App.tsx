@@ -8,6 +8,7 @@ import MainNavigation from "./navigation/MainNavigation";
 import { NavigationRoutes } from './navigation/navRoutes';
 import RegisterScreen from "./screens/Auth/RegisterScreen";
 import CompleteRegistrationScreen from "./screens/Auth/CompleteRegistrationScreen";
+import LoginScreen from "./screens/Auth/Login";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -32,7 +33,7 @@ const App: React.FC = () => {
   const authRoutes = (
     <Switch>
       <Route exact path={`${NavigationRoutes.LOGIN}`}>
-        <h1>LOGIN</h1>
+        <LoginScreen />
       </Route>
       <Route exact path={`${NavigationRoutes.REGISTER}`}>
         <RegisterScreen />
