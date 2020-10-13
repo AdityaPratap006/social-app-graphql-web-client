@@ -20,7 +20,7 @@ export const NavLinkItem = styled.li`
     display: flex;
 
     a {
-        color: black;
+        color: ${props => props.theme.text};
         text-decoration: none;
         display: flex;
         flex-direction: row;
@@ -56,14 +56,14 @@ export const NavLinkItem = styled.li`
         }
 
         &.active {
-            color: rebeccapurple;
+            color: ${props => props.theme.primary};
         }
 
         &:hover {
             cursor: pointer;
             .link-container {
-                color: rebeccapurple;
-                background-color: rgba(0, 0, 0, 0.1);
+                color: ${props => props.theme.primary};
+                background-color: ${props => props.theme.primaryShadow};
             }
         }
     }

@@ -7,10 +7,10 @@ interface StyledButtonProps {
 
 const buttonStyles = css`
     font: inherit;
-    padding: 0.5rem 1.5rem;
-    border: 2px solid #ff0055;
+    padding: 0.75rem 1.5rem 0.5rem 1.5rem;
+    border: none;
     border-radius: 4px;
-    background: #ff0055;
+    background: ${props => props.theme.primary};
     color: white;
     cursor: pointer;
     margin-right: 1rem;
@@ -23,13 +23,11 @@ const buttonStyles = css`
     }
 
     &:hover {
-        background: #ff4382;
-        border-color: 2px solid #ff4382;
+        background: ${props => props.theme.primaryLight};
 
         &:disabled {
             background: #ccc;
             color: #979797;
-            border-color: #ccc;
             cursor: not-allowed;
         }
     }
@@ -41,7 +39,6 @@ const buttonStyles = css`
         &:disabled {
             background: #ccc;
             color: #979797;
-            border-color: #ccc;
             cursor: not-allowed;
         }
     }
@@ -49,13 +46,13 @@ const buttonStyles = css`
     &:disabled {
         background: #ccc;
         color: #979797;
-        border-color: #ccc;
         cursor: not-allowed;
     }
 
     &.button--inverse {
         background: transparent;
-        color: #ff0055;
+        color: ${props => props.theme.primary};
+        border: 2px solid ${props => props.theme.primary};
 
         &:hover {
             color: white;
@@ -70,16 +67,13 @@ const buttonStyles = css`
 
     &.button--danger {
         background: #830000;
-        border-color: #830000;
 
         &:hover {
             background: #f34343;
-            border-color: #f34343;
         }
 
         &:active {
             background: #f34343;
-            border-color: #f34343;
         }
     }
 

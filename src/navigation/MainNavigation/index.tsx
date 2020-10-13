@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavBody, NavFooter, SectionHeader, AccountSection, AccountIcon, LogoutButtonContainer, LogoutButtonStyles, AccountSectionContainer } from './style';
+import { NavBody, NavFooter, AccountSection, AccountIcon, LogoutButtonContainer, LogoutButtonStyles, AccountSectionContainer } from './style';
 import MainNavBar from '../MainNavBar';
 import MainNavLinks from '../MainNavLinks';
 import Button from '../../components/shared/FormElements/Button';
@@ -24,13 +24,12 @@ const MainNavigation = () => {
                     <MainNavLinks />
                 </NavBody>
                 <NavFooter>
-                    <SectionHeader>MY PROFILE</SectionHeader>
                     <AccountSectionContainer>
                         <AccountSection className="account-section">
                             <AccountIcon />
                             <div className="details">
-                                <span className="name">My Name</span>
-                                <span className="email">My @email</span>
+                                <span className="name">{auth.state.user?.name}</span>
+                                <span className="email">{auth.state.user?.email}</span>
                             </div>
                         </AccountSection>
                     </AccountSectionContainer>

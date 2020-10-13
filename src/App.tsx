@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from 'react-toastify';
+import { ThemeProvider } from "styled-components";
 import HomeScreen from "./screens/HomeScreen";
 import { AuthContext } from './context/auth.context';
 import MainNavigation from "./navigation/MainNavigation";
@@ -9,6 +10,7 @@ import { NavigationRoutes } from './navigation/navRoutes';
 import RegisterScreen from "./screens/Auth/RegisterScreen";
 import CompleteRegistrationScreen from "./screens/Auth/CompleteRegistrationScreen";
 import LoginScreen from "./screens/Auth/Login";
+import { lightTheme, darkTheme } from './themes';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -49,18 +51,20 @@ const App: React.FC = () => {
     <React.Fragment>
       <ToastContainer />
       <ApolloProvider client={client}>
-        {
-          authState.user
-            ? (
-              <React.Fragment>
-                <MainNavigation />
-                <main className='main-container'>
-                  {protectedRoutes}
-                </main>
-              </React.Fragment>
-            )
-            : authRoutes
-        }
+        <ThemeProvider theme={lightTheme}>
+          {
+            authState.user
+              ? (
+                <React.Fragment>
+                  <MainNavigation />
+                  <main className='main-container'>
+                    {protectedRoutes}
+                  </main>
+                </React.Fragment>
+              )
+              : authRoutes
+          }
+        </ThemeProvider>
       </ApolloProvider>
     </React.Fragment>
   );

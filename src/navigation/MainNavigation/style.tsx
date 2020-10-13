@@ -1,7 +1,10 @@
 import styled, { css } from 'styled-components';
 import { MdAccountCircle } from 'react-icons/md';
+// import { ITheme } from '../../themes';
 
 export const NavBody = styled.nav`
+    margin-top: 25vh;
+    /* border-top: 1px solid lightgray; */
     padding-left: 3rem;
     width: 100%;
     height: 50vh;
@@ -18,8 +21,8 @@ export const NavFooter = styled.nav`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
-    border-top: 1px solid lightgray;
+    justify-content: flex-start;
+    /* border-top: 1px solid lightgray; */
 `;
 
 export const AccountSectionContainer = styled.div`
@@ -29,8 +32,7 @@ export const AccountSectionContainer = styled.div`
         cursor: pointer;
         
         .account-section {
-            padding-right: 1rem;
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: ${props => props.theme.primaryShadow};
         }
     }
 `;
@@ -41,7 +43,10 @@ export const AccountSection = styled.div`
     justify-content: flex-start;
     align-items: center;
     transition: 0.2s ease;
+    /* border: 2px solid  ${props => props.theme.primary}; */
     border-radius: 20px;
+    padding: 0 0.5rem;
+    margin: 0.5rem;
 
     .details {
         display: flex;
@@ -49,13 +54,15 @@ export const AccountSection = styled.div`
         justify-content: flex-start;
         align-items: flex-start;
         padding-left: 1rem;
+        color: ${props => props.theme.primary};
+        font-weight: bold;
         
         .name {
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .email {
-            font-size: 0.9rem;
+            font-size: 0.75rem;
         }
     }
 `;
@@ -72,6 +79,7 @@ export const SectionHeader = styled.h4`
     font-size: 1.2rem;
     margin: 0.5rem;
     padding: 0;
+    color: ${props => props.theme.primary};
 `;
 
 export const LogoutButtonContainer = styled.div`
@@ -83,4 +91,6 @@ export const LogoutButtonContainer = styled.div`
 
 export const LogoutButtonStyles = css`
     border-radius: 200px !important;
+    transform: translateX(-1.5rem);
+    margin-top: 1rem;
 `;
