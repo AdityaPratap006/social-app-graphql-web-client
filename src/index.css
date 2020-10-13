@@ -19,3 +19,7 @@ code {
 body .main-container {
   margin-left: 25vw;
 }
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}

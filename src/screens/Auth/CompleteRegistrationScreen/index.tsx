@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { Screen, Layer, cardStyles } from './style';
 import Card from '../../../components/shared/Card';
 import Input from '../../../components/shared/FormElements/Input';
-import { FormState, useForm } from '../../../hooks/form-hook';
+import { FormState, useForm } from '../../../hooks/form.hook';
 import { InputElement } from '../../../models';
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE, VALIDATOR_VALUE } from '../../../utils/validators';
 import Button from '../../../components/shared/FormElements/Button';

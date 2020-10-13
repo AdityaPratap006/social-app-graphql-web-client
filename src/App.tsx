@@ -10,7 +10,10 @@ import { NavigationRoutes } from './navigation/navRoutes';
 import RegisterScreen from "./screens/Auth/RegisterScreen";
 import CompleteRegistrationScreen from "./screens/Auth/CompleteRegistrationScreen";
 import LoginScreen from "./screens/Auth/Login";
-import { lightTheme, darkTheme } from './themes';
+import { getTheme } from './themes';
+import SettingsScreen from './screens/SettingsScreen';
+import LoadingSpinner from "./components/shared/LoadingSpinner";
+import { CustomThemeContext } from "./context/theme.context";
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -18,7 +21,18 @@ const client = new ApolloClient({
 });
 
 const App: React.FC = () => {
-  const { state: authState } = useContext(AuthContext);
+  const { state: authState, loading: authLoading } = useContext(AuthContext);
+  const themeValue = useContext(CustomThemeContext);
+
+  const themeState = themeValue.state;
+
+  const currentTheme = getTheme(themeState.theme, themeState.mode);
+
+  if (authLoading) {
+    return (
+      <LoadingSpinner asOverlay />
+    );
+  }
 
   const protectedRoutes = (
     <Switch>
@@ -27,6 +41,9 @@ const App: React.FC = () => {
       </Route>
       <Route exact path={`${NavigationRoutes.CHATS}`} >
         <h1>Chats</h1>
+      </Route>
+      <Route exact path={`${NavigationRoutes.SETTINGS}`}>
+        <SettingsScreen />
       </Route>
       <Redirect to={`${NavigationRoutes.HOME}`} />
     </Switch>
@@ -51,7 +68,7 @@ const App: React.FC = () => {
     <React.Fragment>
       <ToastContainer />
       <ApolloProvider client={client}>
-        <ThemeProvider theme={lightTheme}>
+        <ThemeProvider theme={currentTheme}>
           {
             authState.user
               ? (

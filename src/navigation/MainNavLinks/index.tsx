@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, useHistory } from 'react-router-dom';
-import { RiHomeHeartFill, RiHomeHeartLine, RiChat1Fill, RiChat1Line } from 'react-icons/ri';
+import {
+    RiHomeHeartFill,
+    RiHomeHeartLine,
+    RiChat1Fill,
+    RiChat1Line,
+    RiSettings2Fill,
+    RiSettings2Line,
+} from 'react-icons/ri';
 import { NavLinkList, NavLinkItem } from './style';
 import { NavigationRoutes } from '../navRoutes';
 
@@ -26,6 +33,13 @@ const navlinksList: NavLinkData[] = [
         label: `chats`,
         inactiveIcon: <RiChat1Line className='nav-icon' />,
         activeIcon: <RiChat1Fill className='nav-icon' />,
+    },
+    {
+        id: 3,
+        route: `${NavigationRoutes.SETTINGS}`,
+        label: `settings`,
+        inactiveIcon: <RiSettings2Line className='nav-icon' />,
+        activeIcon: <RiSettings2Fill className='nav-icon' />,
     },
 ];
 

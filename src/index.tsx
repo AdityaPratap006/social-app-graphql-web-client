@@ -6,12 +6,16 @@ import 'react-toastify/dist/ReactToastify.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AuthProvider } from './context/auth.context'
+import { CustomThemeProvider } from "./context/theme.context";
+
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <App />
+        <CustomThemeProvider>
+          <App />
+        </CustomThemeProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>,

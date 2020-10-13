@@ -1,4 +1,4 @@
-import React, { useReducer, createContext, useEffect } from 'react';
+import React, { useReducer, createContext, useEffect, useState } from 'react';
 import { IUser } from '../models';
 import { firebaseAuth } from '../utils/firebase';
 
@@ -38,12 +38,14 @@ const authReducer = (state: AuthState, action: AuthAction): AuthState => {
 interface IAuthContext {
     state: AuthState;
     dispatch: React.Dispatch<AuthAction>;
+    loading: boolean;
 }
 
 
 export const AuthContext = createContext<IAuthContext>({
     state: { user: undefined },
     dispatch: () => null,
+    loading: true,
 });
 
 // context provider
@@ -53,6 +55,7 @@ interface AuthProviderProps {
 
 export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
     const [state, dispatch] = useReducer(authReducer, INITIAL_STATE);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const unsubscribeAuth = firebaseAuth.onAuthStateChanged(async user => {
@@ -66,11 +69,13 @@ export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
                         token: idTokenResult.token,
                     }
                 });
+                setLoading(false);
             } else {
                 dispatch({
                     type: AuthActionType.LOGGED_IN_USER,
                     payload: undefined,
                 });
+                setLoading(false);
             }
         });
 
@@ -79,7 +84,7 @@ export const AuthProvider = (props: AuthProviderProps): JSX.Element => {
         };
     }, []);
 
-    const value = { state, dispatch };
+    const value: IAuthContext = { state, dispatch, loading };
 
     return (
         <AuthContext.Provider value={value} >
