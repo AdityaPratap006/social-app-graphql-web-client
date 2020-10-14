@@ -39,15 +39,55 @@ export const darkMode: ModeColors = {
 export const purpleTheme: ThemeColors = {
     primary: '#ab47bc',
     primaryLight: '#ba68c8',
-    primaryShadow: 'rgb(171,71,188, 0.2)',
+    primaryShadow: 'rgba(171,71,188, 0.2)',
+};
+
+export const blueTheme: ThemeColors = {
+    primary: '#2196f3',
+    primaryLight: '#42a5f5',
+    primaryShadow: 'rgba(33,150,243, 0.2)',
+};
+
+export const pinkTheme: ThemeColors = {
+    primary: '#e91e63',
+    primaryLight: '#ec407a',
+    primaryShadow: 'rgba(233,30,99, 0.2)',
+};
+
+export const greenTheme: ThemeColors = {
+    primary: '#17BF63',
+    primaryLight: '#17BF63',
+    primaryShadow: 'rgba(23,191,99, 0.2)',
+};
+
+export const yellowTheme: ThemeColors = {
+    primary: '#ffb300',
+    primaryLight: '#ffc107',
+    primaryShadow: 'rgba(255,179,0, 0.2)',
+};
+
+export const orangeTheme: ThemeColors = {
+    primary: '#fb8c00',
+    primaryLight: '#ff9800',
+    primaryShadow: 'rgba(251,140,0, 0.2)',
 };
 
 export const getPrimary = (theme: THEME): ThemeColors => {
     switch (theme) {
         case THEME.PURPLE:
             return purpleTheme;
+        case THEME.BLUE:
+            return blueTheme;
+        case THEME.PINK:
+            return pinkTheme;
+        case THEME.GREEN:
+            return greenTheme;
+        case THEME.YELLOW:
+            return yellowTheme;
+        case THEME.ORANGE:
+            return orangeTheme;
         default:
-            return purpleTheme;
+            return blueTheme;
     }
 }
 

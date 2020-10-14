@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-    width: 25rem;
-    max-width: 90vw;
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -10,12 +9,12 @@ export const Container = styled.div`
 
 export const SwitchSelector = styled.button`
     outline: none;
-    width: 7rem;
-    height: 3rem;
+    width: calc(7rem + 8px);
+    height: calc(2.5rem + 12px);
     padding: 4px;
     border-radius: 200px;
     background-color: lightgray;
-    border: 1px solid ${props => props.theme.defaultBorderColor};
+    border: 2px solid ${props => props.theme.defaultBorderColor};
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -24,7 +23,8 @@ export const SwitchSelector = styled.button`
 
     &.on {
         background-color: transparent;
-        padding-left: calc(7rem - 4px - 2.5rem);
+        padding-left: calc(7rem - 2.5rem);
+        border-color: ${props => props.theme.primary};
     }
 
     &:hover {
@@ -40,8 +40,9 @@ export const Thumb = styled.div<ThumbProps>`
     width: 2.5rem;
     height: 2.5rem;
     border-radius: 50%;
-    border: 1px solid ${props => props.theme.primary};
+    border: 2px solid ${props => props.theme.primary};
     background-color: ${props => props.isOn ? props.theme.primary : '#fff'};
+    transition: 0.5s ease;
 `;
 
 export const IndicatorText = styled.span`

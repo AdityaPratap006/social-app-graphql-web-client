@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useEffect } from 'react';
 
 export enum MODE {
     DARK = 'DARK',
@@ -7,6 +7,11 @@ export enum MODE {
 
 export enum THEME {
     PURPLE = 'PURPLE',
+    BLUE = 'BLUE',
+    PINK = 'PINK',
+    YELLOW = 'YELLOW',
+    ORANGE = 'ORANGE',
+    GREEN = 'GREEN',
 }
 
 export interface ThemeState {
@@ -15,8 +20,8 @@ export interface ThemeState {
 }
 
 export const INITIAL_STATE: ThemeState = {
-    theme: THEME.PURPLE,
-    mode: MODE.LIGHT,
+    theme: localStorage.getItem('theme') as THEME || THEME.PURPLE,
+    mode: localStorage.getItem('mode') as MODE || MODE.LIGHT,
 }
 
 export enum ThemeActionType {
@@ -55,6 +60,14 @@ const themeReducer = (state: ThemeState = INITIAL_STATE, action: ThemeAction): T
 
 export const useThemeAndMode = () => {
     const [state, dispatch] = useReducer(themeReducer, INITIAL_STATE);
+
+    const { theme, mode } = state;
+
+    useEffect(() => {
+        window.localStorage.setItem('theme', `${theme}`);
+        window.localStorage.setItem('mode', `${mode}`);
+
+    }, [mode, theme]);
 
     return { state, dispatch };
 }

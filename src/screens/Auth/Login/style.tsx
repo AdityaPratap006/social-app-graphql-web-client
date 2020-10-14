@@ -20,7 +20,6 @@ export const cardStyles = css`
     /* transform: translateY(-2rem); */
     width: 30rem;
     max-width: 90vw;
-    background: rgba(255, 255, 255, 0.9);
     z-index: 5;
 `;
 

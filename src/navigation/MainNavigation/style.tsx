@@ -54,7 +54,7 @@ export const AccountSection = styled.div`
         justify-content: flex-start;
         align-items: flex-start;
         padding-left: 1rem;
-        color: ${props => props.theme.primary};
+        color: ${props => props.theme.text};
         font-weight: bold;
         
         .name {

@@ -8,7 +8,7 @@ export const FormControl = styled.div`
         display: block;
         font-weight: bold;
         margin-bottom: 0.5rem;
-        color: blueviolet;
+        color: ${props => props.theme.primary};
     }
 
     input {
@@ -23,7 +23,7 @@ export const FormControl = styled.div`
         &:focus {
             outline: none;
             background: #ebebeb;
-            border-color: #510077;
+            border-color: ${props => props.theme.primary};
         }
 
         &:disabled {
