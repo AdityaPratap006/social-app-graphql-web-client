@@ -23,3 +23,15 @@ body .main-container {
 button {
   -webkit-tap-highlight-color: transparent;
 }
+
+@media (max-width: 1200px) {
+  body .main-container {
+    margin-left: 10vw;
+  }
+}
+
+@media (max-width: 850px) {
+  body .main-container {
+    margin-left: 0;
+  }
+}

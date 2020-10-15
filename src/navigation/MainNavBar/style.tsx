@@ -19,9 +19,13 @@ export const Header = styled.header<HeaderProps>`
     /* box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.26); */
     z-index: 5;
     ${props => props.addCSS}
+    overflow: hidden;
 
-    @media (max-width: 800px) {
+    @media (max-width: 1200px) {
         width: 10vw;
-        padding-left: 0.5rem;
+    }
+
+    @media (max-width: 850px) {
+        display: none;
     }
 `;

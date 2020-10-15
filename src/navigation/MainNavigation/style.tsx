@@ -3,7 +3,6 @@ import { MdAccountCircle } from 'react-icons/md';
 // import { ITheme } from '../../themes';
 
 export const NavBody = styled.nav`
-    margin-top: 25vh;
     /* border-top: 1px solid lightgray; */
     padding-left: 3rem;
     width: 100%;
@@ -12,6 +11,10 @@ export const NavBody = styled.nav`
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
+
+    @media (max-width: 1200px) {
+        padding-left: 0.5rem;
+    }
 `;
 
 export const NavFooter = styled.nav`
@@ -23,6 +26,10 @@ export const NavFooter = styled.nav`
     align-items: flex-start;
     justify-content: flex-start;
     /* border-top: 1px solid lightgray; */
+
+    @media (max-width: 1200px) {
+        display: none;
+    }
 `;
 
 export const AccountSectionContainer = styled.div`

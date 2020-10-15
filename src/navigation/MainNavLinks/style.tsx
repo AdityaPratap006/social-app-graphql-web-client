@@ -70,11 +70,16 @@ export const NavLinkItem = styled.li`
 
     
 
-    @media (max-width: 800px) {
-        margin: 0 0.1rem;
+    @media (max-width: 1200px) {
+        margin: 2rem 0;
 
         a {
             .link-container {
+                .nav-icon {
+                    width: 3rem;
+                    height: 3rem;
+                }
+
                 p {
                     display: none;
                 }
