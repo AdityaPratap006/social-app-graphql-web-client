@@ -70,7 +70,7 @@ export const NavLinkItem = styled.li`
 
     
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1300px) {
         margin: 2rem 0;
 
         a {

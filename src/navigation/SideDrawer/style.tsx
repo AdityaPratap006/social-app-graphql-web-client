@@ -13,10 +13,10 @@ export const AsideDrawer = styled.aside`
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 
-    @media (min-width: 1200px) {
+    @media (min-width: 1300px) {
         display: none;
     }
 

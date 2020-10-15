@@ -33,8 +33,8 @@ const buttonStyles = css`
     }
 
     &:active {
-        background: #ff4382;
-        border-color: #ff4382;
+        background: ${props => props.theme.primaryLight};
+        border-color: ${props => props.theme.primaryLight};
 
         &:disabled {
             background: #ccc;
@@ -56,12 +56,12 @@ const buttonStyles = css`
 
         &:hover {
             color: white;
-            background: #ff0055;
+            background: ${props => props.theme.primary};
         }
 
         &:active {
             color: white;
-            background: #ff0055;
+            background: ${props => props.theme.primary};
         }
     }
 

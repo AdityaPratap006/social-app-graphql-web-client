@@ -45,7 +45,7 @@ const navlinksList: NavLinkData[] = [
 
 const MainNavLinks = () => {
     const history = useHistory();
-    const [currentRoute, setCurrentRoute] = useState(`${NavigationRoutes.HOME}`);
+    const [currentRoute, setCurrentRoute] = useState(`${history.location.pathname}`);
 
     useEffect(() => {
         history.listen((location, action) => {

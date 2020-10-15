@@ -15,13 +15,13 @@ export const Header = styled.header<HeaderProps>`
     top: 0;
     left: 0;
     background: ${props => props.theme.background};
-    border-right: 0.1px solid ${props => props.theme.defaultBorderColor};
+    border-right: 1px solid ${props => props.theme.defaultBorderColor};
     /* box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.26); */
     z-index: 5;
     ${props => props.addCSS}
     overflow: hidden;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1300px) {
         width: 10vw;
     }
 
@@ -52,7 +52,7 @@ export const MenuButton = styled.button`
         color: gray;
     }
 
-    @media (min-width: 1200px) {
+    @media (min-width: 1300px) {
         display: none;
     }
 `;
