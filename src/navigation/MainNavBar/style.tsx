@@ -29,3 +29,30 @@ export const Header = styled.header<HeaderProps>`
         display: none;
     }
 `;
+
+export const MenuButton = styled.button`
+    border: none;
+    outline: none;
+    -webkit-tap-highlight-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    background-color: transparent;
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    
+    .icon {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+        color: gray;
+    }
+
+    @media (min-width: 1200px) {
+        display: none;
+    }
+`;

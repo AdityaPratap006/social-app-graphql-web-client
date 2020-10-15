@@ -5,9 +5,17 @@ import MainNavLinks from '../MainNavLinks';
 import Button from '../../components/shared/FormElements/Button';
 import { AuthActionType, AuthContext } from '../../context/auth.context';
 import { firebaseAuth } from '../../utils/firebase';
+import BackDrop from '../../components/shared/BackDrop';
+import SideDrawer from '../SideDrawer';
+import { SideDrawerContext } from '../../context/sidedrawer.context';
 
 const MainNavigation = () => {
     const auth = useContext(AuthContext);
+    const sideDrawerCTX = useContext(SideDrawerContext);
+
+    const closeDrawerHandler = () => {
+        sideDrawerCTX.close();
+    }
 
     const logoutHandler = () => {
         firebaseAuth.signOut();
@@ -19,6 +27,10 @@ const MainNavigation = () => {
 
     return (
         <React.Fragment>
+            <BackDrop show={sideDrawerCTX.isOpen} onClick={closeDrawerHandler} />
+            <SideDrawer show={sideDrawerCTX.isOpen} onClose={closeDrawerHandler}>
+                <h5>Links go here!</h5>
+            </SideDrawer>
             <MainNavBar>
                 <NavBody>
                     <MainNavLinks />

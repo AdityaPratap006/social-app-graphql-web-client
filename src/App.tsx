@@ -14,6 +14,7 @@ import { getTheme } from './themes';
 import SettingsScreen from './screens/SettingsScreen';
 import LoadingSpinner from "./components/shared/LoadingSpinner";
 import { CustomThemeContext } from "./context/theme.context";
+import { SideDrawerProvider } from './context/sidedrawer.context';
 
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -69,18 +70,20 @@ const App: React.FC = () => {
       <ToastContainer />
       <ApolloProvider client={client}>
         <ThemeProvider theme={currentTheme}>
-          {
-            authState.user
-              ? (
-                <React.Fragment>
-                  <MainNavigation />
-                  <main className='main-container'>
-                    {protectedRoutes}
-                  </main>
-                </React.Fragment>
-              )
-              : authRoutes
-          }
+          <SideDrawerProvider>
+            {
+              authState.user
+                ? (
+                  <React.Fragment>
+                    <MainNavigation />
+                    <main className='main-container'>
+                      {protectedRoutes}
+                    </main>
+                  </React.Fragment>
+                )
+                : authRoutes
+            }
+          </SideDrawerProvider>
         </ThemeProvider>
       </ApolloProvider>
     </React.Fragment>

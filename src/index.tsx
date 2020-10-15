@@ -10,15 +10,13 @@ import { CustomThemeProvider } from "./context/theme.context";
 
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <CustomThemeProvider>
-          <App />
-        </CustomThemeProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <AuthProvider>
+      <CustomThemeProvider>
+        <App />
+      </CustomThemeProvider>
+    </AuthProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

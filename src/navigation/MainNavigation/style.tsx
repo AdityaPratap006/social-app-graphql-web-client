@@ -13,7 +13,7 @@ export const NavBody = styled.nav`
     align-items: flex-start;
 
     @media (max-width: 1200px) {
-        padding-left: 0.5rem;
+        padding: 0;
     }
 `;
 

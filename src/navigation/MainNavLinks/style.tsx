@@ -74,6 +74,8 @@ export const NavLinkItem = styled.li`
         margin: 2rem 0;
 
         a {
+            justify-content: center;
+            
             .link-container {
                 .nav-icon {
                     width: 3rem;
