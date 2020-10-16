@@ -6,6 +6,7 @@ import BackDrop from '../../components/shared/BackDrop';
 import SideDrawer from '../SideDrawer';
 import { SideDrawerContext } from '../../context/sidedrawer.context';
 import ProfileSection from '../ProfileSection';
+import SideDrawerNavLinks from '../SideDrawerNavLinks';
 
 const MainNavigation = () => {
     const sideDrawerCTX = useContext(SideDrawerContext);
@@ -19,6 +20,7 @@ const MainNavigation = () => {
             <BackDrop show={sideDrawerCTX.isOpen} onClick={closeDrawerHandler} />
             <SideDrawer show={sideDrawerCTX.isOpen} onClose={closeDrawerHandler}>
                 <ProfileSection insideSideDrawer />
+                <SideDrawerNavLinks />
             </SideDrawer>
             <MainNavBar>
                 <NavBody>

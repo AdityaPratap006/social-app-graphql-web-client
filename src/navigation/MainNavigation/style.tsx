@@ -4,7 +4,7 @@ export const NavBody = styled.nav`
     /* border-top: 1px solid lightgray; */
     padding-left: 3rem;
     width: 100%;
-    height: 50vh;
+    /* height: 50vh; */
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -12,6 +12,7 @@ export const NavBody = styled.nav`
 
     @media (max-width: 1300px) {
         padding: 0;
+        /* height: 80vh; */
     }
 `;
 
@@ -26,6 +27,10 @@ export const NavFooter = styled.nav`
     
     @media (min-width: 1300px) {
         border-top: 1px solid ${props => props.theme.defaultBorderColor};
+    }
+
+    @media (max-width: 1300px) {
+        display: none;
     }
 
 `;

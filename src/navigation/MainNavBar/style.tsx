@@ -5,11 +5,12 @@ interface HeaderProps {
 }
 
 export const Header = styled.header<HeaderProps>`
+    padding: 3rem 0;
     width: 25vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     position: fixed;
     top: 0;
@@ -23,6 +24,7 @@ export const Header = styled.header<HeaderProps>`
 
     @media (max-width: 1300px) {
         width: 10vw;
+        padding: 2rem 0;
     }
 
     @media (max-width: 850px) {
@@ -38,12 +40,9 @@ export const MenuButton = styled.button`
     justify-content: center;
     align-items: center;
     padding: 0;
+    margin: 1rem 0;
     background-color: transparent;
     cursor: pointer;
-    position: absolute;
-    top: 1rem;
-    left: 50%;
-    transform: translateX(-50%);
     
     .icon {
         width: 3.5rem;

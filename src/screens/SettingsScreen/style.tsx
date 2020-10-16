@@ -19,8 +19,15 @@ export const Grid = styled.div`
     "themeSettings ."
     "themeSettings .";
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-rows: repeat(auto, minmax(150px, 1fr));
     gap: 20px;
+    align-items: center;
+
+    @media (max-width: 640px) {
+        grid-template-columns: 1fr;
+        grid-template-areas: "backgroundSettings"
+        "themeSettings";
+    }
 `;
 
 export const BackgroundSettingsContainer = styled.div`

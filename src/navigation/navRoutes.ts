@@ -5,4 +5,8 @@ export enum NavigationRoutes {
     CHATS = `/chats`,
     COMPLETE_REGISTRATION = `/auth/complete-registration`,
     SETTINGS = `/settings`,
+    PROFILE = `/profile`,
+    FAMILIES = `/families`,
+    NOTIFICATIONS = `/notifications`,
+    LOCATE = `/locate`,
 }

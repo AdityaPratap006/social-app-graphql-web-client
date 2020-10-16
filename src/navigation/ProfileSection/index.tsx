@@ -6,7 +6,6 @@ import {
     LogoutButtonContainer,
     LogoutButtonStyles,
     AccountSectionContainer,
-    ViewProfileButtonContainer,
 } from './style';
 import { AuthContext, AuthActionType } from '../../context/auth.context';
 import { firebaseAuth } from '../../utils/firebase';
@@ -38,11 +37,6 @@ const ProfileSection: React.FC<ProfileSectionProps> = (props) => {
                     </div>
                 </AccountSection>
             </AccountSectionContainer>
-            <ViewProfileButtonContainer>
-                <Button inverse addCSS={LogoutButtonStyles}>
-                    VIEW PROFILE
-                </Button>
-            </ViewProfileButtonContainer>
             <LogoutButtonContainer>
                 <Button onClick={logoutHandler} addCSS={LogoutButtonStyles}>
                     LOGOUT

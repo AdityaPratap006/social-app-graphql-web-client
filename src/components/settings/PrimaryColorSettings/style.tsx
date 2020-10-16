@@ -5,7 +5,11 @@ export const Container = styled.div`
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, minmax(5rem, 1fr));
+    grid-template-rows: repeat(auto, minmax(5rem, 1fr));
+
+    @media (max-width: 1100px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 export const ColorSelector = styled.div`

@@ -5,7 +5,7 @@ export const NavLinkList = styled.ul`
     height: 100%;
     list-style: none;
     margin: 0;
-    padding: 1rem 0;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -13,7 +13,7 @@ export const NavLinkList = styled.ul`
 `;
 
 export const NavLinkItem = styled.li`
-    margin: 0.2rem 0;
+    margin: 0.5rem 0;
     padding: 0;
     width: 100%;
     height: 3rem;
@@ -29,6 +29,7 @@ export const NavLinkItem = styled.li`
         height: 100%;
         width: 100%;
         -webkit-tap-highlight-color: transparent;
+
 
         .link-container {
             display: flex;
@@ -65,37 +66,6 @@ export const NavLinkItem = styled.li`
             .link-container {
                 color: ${props => props.theme.primary};
                 background-color: ${props => props.theme.primaryShadow};
-            }
-        }
-    }
-
-    
-
-    @media (max-width: 1300px) {
-        margin: 1.2rem 0;
-        
-        &.hide {
-            display: none;
-        }
-
-        a {
-            justify-content: center;
-            
-            .link-container {
-                .nav-icon {
-                    width: 3rem;
-                    height: 3rem;
-                }
-
-                p {
-                    display: none;
-                }
-            }
-        }
-
-        a.active {
-            .link-container {
-        
             }
         }
     }
