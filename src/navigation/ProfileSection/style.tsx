@@ -43,7 +43,11 @@ export const AccountSection = styled.div`
     /* border: 2px solid  ${props => props.theme.primary}; */
     border-radius: 20px;
     padding: 1rem;
-    margin: 1rem;
+    margin-left: 1rem;
+
+    @media (max-width: 640px) {
+        flex-direction: column;
+    }
 
     .details {
         display: flex;
@@ -74,7 +78,18 @@ export const AccountSection = styled.div`
             .email {
                 font-size: 1rem;
             }
-        } 
+        }
+
+        @media (max-width: 640px) {
+
+            .name {
+                font-size: 1.1rem;
+            }
+
+            .email {
+                font-size: 0.8rem;
+            }
+        }
     }
 `;
 
@@ -88,6 +103,11 @@ export const AccountIcon = styled(MdAccountCircle)`
         /* margin: 1rem; */
         width: 7rem;
         height: 7rem; 
+    }
+
+    @media (max-width: 640px) {
+        width: 5rem;
+        height: 5rem;
     }
 `;
 

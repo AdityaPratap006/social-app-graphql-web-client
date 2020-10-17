@@ -8,7 +8,7 @@ export const BackDropContainer = styled.div`
     height: 100vh;
     background-color: ${props => props.theme.text};
     opacity: 0.25;
-    z-index: 20;
+    z-index: 80;
 
     &.enter-active {
         opacity: 0;

@@ -13,11 +13,16 @@ export const NavLinkList = styled.ul`
 `;
 
 export const NavLinkItem = styled.li`
-    margin: 0.5rem 0;
+    margin: 1rem 0;
     padding: 0;
     width: 100%;
     height: 3rem;
     display: flex;
+
+    @media (max-width: 640px) {
+        height: 2rem;
+        margin: 0.5rem 0;
+    }
 
     a {
         color: ${props => props.theme.text};
@@ -53,6 +58,10 @@ export const NavLinkItem = styled.li`
                 font-size: 1.4rem;
                 text-transform: capitalize;
                 font-weight: bold;
+
+                @media (max-width: 450px) {
+                    font-size: 1.1rem;
+                }
             }
 
         }

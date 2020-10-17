@@ -1,23 +1,26 @@
 import React from 'react';
-import { BackgroundSettingsContainer, Grid, Screen, ThemeSettingsContainer } from './style';
-import ScreenTitle from '../../components/shared/ScreenTitle';
+import { BackgroundSettingsContainer, SettingsGrid, ThemeSettingsContainer, SettingsScreenContent } from './style';
 import BackgroundSettings from '../../components/settings/BackgroundSettings';
 import PrimaryColorSettings from '../../components/settings/PrimaryColorSettings';
+import Screen from '../../components/shared/Screen';
 
 const SettingsScreen = () => {
     return (
-        <Screen>
-            <ScreenTitle>
-                SETTINGS
-            </ScreenTitle>
-            <Grid>
-                <BackgroundSettingsContainer>
-                    <BackgroundSettings />
-                </BackgroundSettingsContainer>
-                <ThemeSettingsContainer>
-                    <PrimaryColorSettings />
-                </ThemeSettingsContainer>
-            </Grid>
+        <Screen
+            title="settings"
+            stackedUpScreen
+            withGoBackButton
+        >
+            <SettingsScreenContent>
+                <SettingsGrid>
+                    <BackgroundSettingsContainer>
+                        <BackgroundSettings />
+                    </BackgroundSettingsContainer>
+                    <ThemeSettingsContainer>
+                        <PrimaryColorSettings />
+                    </ThemeSettingsContainer>
+                </SettingsGrid>
+            </SettingsScreenContent>
         </Screen>
     );
 };

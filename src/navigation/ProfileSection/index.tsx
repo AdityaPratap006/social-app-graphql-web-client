@@ -10,6 +10,7 @@ import {
 import { AuthContext, AuthActionType } from '../../context/auth.context';
 import { firebaseAuth } from '../../utils/firebase';
 import Button from '../../components/shared/FormElements/Button';
+import { SideDrawerContext } from '../../context/sidedrawer.context';
 
 interface ProfileSectionProps {
     insideSideDrawer?: boolean;
@@ -17,9 +18,11 @@ interface ProfileSectionProps {
 
 const ProfileSection: React.FC<ProfileSectionProps> = (props) => {
     const auth = useContext(AuthContext);
+    const sideDrawerCTX = useContext(SideDrawerContext);
 
     const logoutHandler = () => {
         firebaseAuth.signOut();
+        sideDrawerCTX.close();
         auth.dispatch({
             type: AuthActionType.LOGGED_IN_USER,
             payload: undefined,
