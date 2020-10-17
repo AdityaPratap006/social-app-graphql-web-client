@@ -7,6 +7,7 @@ import SideDrawer from '../SideDrawer';
 import { SideDrawerContext } from '../../context/sidedrawer.context';
 import ProfileSection from '../ProfileSection';
 import SideDrawerNavLinks from '../SideDrawerNavLinks';
+import BottomAppBar from '../BottomAppBar';
 
 const MainNavigation = () => {
     const sideDrawerCTX = useContext(SideDrawerContext);
@@ -30,6 +31,7 @@ const MainNavigation = () => {
                     <ProfileSection />
                 </NavFooter>
             </MainNavBar>
+            <BottomAppBar />
         </React.Fragment>
     );
 };

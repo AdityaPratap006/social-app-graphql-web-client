@@ -7,6 +7,7 @@ export interface ITheme {
     text?: string;
     paper?: string;
     defaultBorderColor?: string;
+    appBarBackground?: string;
 }
 
 interface ThemeColors {
@@ -20,6 +21,7 @@ interface ModeColors {
     text?: string;
     paper?: string;
     defaultBorderColor?: string;
+    appBarBackground?: string;
 }
 
 export const lightMode: ModeColors = {
@@ -27,6 +29,7 @@ export const lightMode: ModeColors = {
     text: '#141d26',
     paper: '#fafafa',
     defaultBorderColor: `rgb(159,159,159, 0.5)`,
+    appBarBackground: `#fff`,
 };
 
 export const darkMode: ModeColors = {
@@ -34,6 +37,7 @@ export const darkMode: ModeColors = {
     text: '#fff',
     paper: '#111',
     defaultBorderColor: `rgba(210, 210, 210, 0.2)`,
+    appBarBackground: `#000`,
 }
 
 export const purpleTheme: ThemeColors = {

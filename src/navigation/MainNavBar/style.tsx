@@ -18,16 +18,16 @@ export const Header = styled.header<HeaderProps>`
     background: ${props => props.theme.background};
     border-right: 1px solid ${props => props.theme.defaultBorderColor};
     /* box-shadow: 0 0.5px 2px rgba(0, 0, 0, 0.26); */
-    z-index: 5;
+    z-index: 50;
     ${props => props.addCSS}
     overflow: hidden;
 
     @media (max-width: 1300px) {
         width: 10vw;
-        padding: 2rem 0;
+        padding: 1rem 0;
     }
 
-    @media (max-width: 850px) {
+    @media (max-width: 640px) {
         display: none;
     }
 `;

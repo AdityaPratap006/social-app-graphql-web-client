@@ -9,6 +9,12 @@ export const Screen = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     background-color: ${props => props.theme.background};
+    position: sticky;
+
+    @media (max-width: 640px) {
+        padding-bottom: 5rem;
+        z-index: 100;
+    }
 `;
 
 export const Grid = styled.div`

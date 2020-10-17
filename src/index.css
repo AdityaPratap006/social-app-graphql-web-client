@@ -30,7 +30,7 @@ button {
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 640px) {
   body .main-container {
     margin-left: 0;
   }

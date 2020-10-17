@@ -9,6 +9,10 @@ export const Screen = styled.div`
     justify-content: flex-start;
     align-items: flex-start;
     background-color: ${props => props.theme.background};
+
+    @media (max-width: 1008px) {
+        align-items: center;
+    }
 `;
 
 export const LoadingScreen = styled.div`
