@@ -16,11 +16,6 @@ import LoadingSpinner from "./components/shared/LoadingSpinner";
 import { CustomThemeContext } from "./context/theme.context";
 import { SideDrawerProvider } from './context/sidedrawer.context';
 
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
-  cache: new InMemoryCache(),
-});
-
 const App: React.FC = () => {
   const { state: authState, loading: authLoading } = useContext(AuthContext);
   const themeValue = useContext(CustomThemeContext);
@@ -34,6 +29,14 @@ const App: React.FC = () => {
       <LoadingSpinner asOverlay />
     );
   }
+
+  const client = new ApolloClient({
+    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    cache: new InMemoryCache(),
+    headers: {
+      authorization: authState.user?.token || '',
+    }
+  });
 
   const protectedRoutes = (
     <Switch>

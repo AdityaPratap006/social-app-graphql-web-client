@@ -6,7 +6,7 @@ export const AppBar = styled.div`
     width: 90vw;
     padding: 0.5rem;
     border-radius: 200px;
-    border: 3px solid ${props => props.theme.primary};
+    border: 2px solid ${props => props.theme.primary};
     background-color: ${props => props.theme.appBarBackground};
     position: fixed;
     bottom: 1.5rem;
