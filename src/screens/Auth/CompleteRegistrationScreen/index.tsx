@@ -1,17 +1,27 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { gql, useMutation } from '@apollo/client';
 import { Screen, Layer, cardStyles } from './style';
 import Card from '../../../components/shared/Card';
 import Input from '../../../components/shared/FormElements/Input';
 import { FormState, useForm } from '../../../hooks/form.hook';
 import { InputElement } from '../../../models';
-import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE, VALIDATOR_VALUE } from '../../../utils/validators';
+import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH, VALIDATOR_REQUIRE } from '../../../utils/validators';
 import Button from '../../../components/shared/FormElements/Button';
 import { firebaseAuth } from '../../../utils/firebase';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { NavigationRoutes } from '../../../navigation/navRoutes';
 import { AuthActionType, AuthContext } from '../../../context/auth.context';
+
+const USER_CREATE = gql`
+    mutation userCreate($input: AuthTokenInput!) {
+        userCreate(input: $input) {
+            username,
+            email
+        }
+    }
+`;
 
 const INITIAL_STATE: FormState = {
     inputs: {
@@ -27,10 +37,6 @@ const INITIAL_STATE: FormState = {
             value: '',
             isValid: false,
         },
-        confirmPassword: {
-            value: '',
-            isValid: false,
-        },
     },
     isValid: false,
 }
@@ -40,6 +46,20 @@ const CompleteRegistrationScreen = () => {
     const [loading, setLoading] = useState(false);
     const history = useHistory();
     const auth = useContext(AuthContext);
+    const [userCreate] = useMutation(USER_CREATE);
+
+    const { dispatch } = auth;
+    useEffect(() => {
+        dispatch({
+            type: AuthActionType.AUTO_LOGIN_DEACTIVATE,
+        });
+
+        return () => {
+            dispatch({
+                type: AuthActionType.AUTO_LOGIN_ACTIVATE,
+            });
+        };
+    }, [dispatch]);
 
     useEffect(() => {
         const storedEmail = window.localStorage.getItem('emailForRegistration');
@@ -55,6 +75,21 @@ const CompleteRegistrationScreen = () => {
 
     }, [history, setFormData]);
 
+    const sendCreateUserRequest = async (token: string) => {
+        try {
+            const result = await userCreate({
+                variables: {
+                    input: {
+                        authToken: token,
+                    },
+                }
+            });
+            console.log(result);
+        } catch (error) {
+            toast.error(error.message, { autoClose: false });
+        }
+    }
+
     const formSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -63,7 +98,7 @@ const CompleteRegistrationScreen = () => {
         setLoading(true);
         try {
             const result = await firebaseAuth.signInWithEmailLink(email.value as string, window.location.href);
-            // console.log(result);
+            console.log(result);
 
             if (result.user?.emailVerified) {
                 window.localStorage.removeItem('emailForRegistration');
@@ -72,7 +107,16 @@ const CompleteRegistrationScreen = () => {
                     await user.updatePassword(password.value as string);
                     await user.updateProfile({ displayName: name.value as string });
 
+                    console.log('updated user profile');
+
                     const idTokenResult = await user.getIdTokenResult();
+
+                    console.log('received id token result, sending create user request!');
+
+                    // send request to server to create the user in db
+                    await sendCreateUserRequest(idTokenResult.token);
+
+                    console.log('user created');
 
                     auth.dispatch({
                         type: AuthActionType.LOGGED_IN_USER,
@@ -82,11 +126,10 @@ const CompleteRegistrationScreen = () => {
                             token: idTokenResult.token,
                         },
                     });
-
+                    auth.setLoading(false);
+                    console.log('logged in after complete registration process');
                 }
             }
-
-            setLoading(false);
         } catch (err) {
             console.log("Registration Incomplete! ", err.message, ": ", err);
             setLoading(false);
@@ -147,15 +190,6 @@ const CompleteRegistrationScreen = () => {
                         label="Password"
                         validators={[VALIDATOR_MINLENGTH(6)]}
                         errorText="Password should have atleast 6 characters."
-                        getInput={inputChangeHandler}
-                    />
-                    <Input
-                        element={InputElement.INPUT}
-                        id="confirmPassword"
-                        type="password"
-                        label="Confirm Password"
-                        validators={[VALIDATOR_VALUE(formState.inputs.password.value as string)]}
-                        errorText="Passwords don't match."
                         getInput={inputChangeHandler}
                     />
                     {!loading && (

@@ -24,8 +24,7 @@ const ProfileSection: React.FC<ProfileSectionProps> = (props) => {
         firebaseAuth.signOut();
         sideDrawerCTX.close();
         auth.dispatch({
-            type: AuthActionType.LOGGED_IN_USER,
-            payload: undefined,
+            type: AuthActionType.LOGOUT_USER,
         });
     }
 

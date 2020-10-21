@@ -1,5 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { gql, useMutation } from '@apollo/client';
 import { Screen, cardStyles, Layer } from './style';
 import Card from '../../../components/shared/Card';
 import Input from '../../../components/shared/FormElements/Input';
@@ -10,6 +11,15 @@ import Button from '../../../components/shared/FormElements/Button';
 import { firebaseAuth, googleAuthProvider } from '../../../utils/firebase';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { AuthContext, AuthActionType } from '../../../context/auth.context';
+
+const USER_CREATE = gql`
+    mutation userCreate($input: AuthTokenInput!) {
+        userCreate(input: $input) {
+            username,
+            email
+        }
+    }
+`;
 
 const INITIAL_STATE: FormState = {
     inputs: {
@@ -29,15 +39,49 @@ const LoginScreen = () => {
     const [formState, inputChangeHandler] = useForm(INITIAL_STATE);
     const [loading, setLoading] = useState(false);
     const auth = useContext(AuthContext);
+    const [userCreate] = useMutation(USER_CREATE);
+
+    const { dispatch } = auth;
+    useEffect(() => {
+        dispatch({
+            type: AuthActionType.AUTO_LOGIN_DEACTIVATE,
+        });
+
+        return () => {
+            dispatch({
+                type: AuthActionType.AUTO_LOGIN_ACTIVATE,
+            });
+        };
+    }, [dispatch]);
+
+    const sendCreateUserRequest = async (token: string) => {
+        try {
+            const result = await userCreate({
+                variables: {
+                    input: {
+                        authToken: token,
+                    },
+                }
+            });
+            console.log(result);
+        } catch (error) {
+            toast.error(error.message, { autoClose: false });
+        }
+    }
 
     const loginWithGoogleHandler = async () => {
+
         setLoading(true);
+
         try {
+
             const result = await firebaseAuth.signInWithPopup(googleAuthProvider);
             const { user } = result;
 
             if (user) {
                 const idTokenResult = await user.getIdTokenResult();
+
+                await sendCreateUserRequest(idTokenResult.token);
 
                 auth.dispatch({
                     type: AuthActionType.LOGGED_IN_USER,
@@ -48,10 +92,13 @@ const LoginScreen = () => {
                     }
                 });
 
+                auth.setLoading(false);
+
+                // show toast notification
+                toast.success(`Logged in successfully!`);
             }
 
-            // show toast notification
-            toast.success(`Logged in successfully!`);
+
         } catch (err) {
             setLoading(false);
             console.log(err.message, ": ", err);
@@ -61,16 +108,24 @@ const LoginScreen = () => {
 
     const formSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         setLoading(true);
         try {
+
             const email = formState.inputs.email.value as string;
             const password = formState.inputs.password.value as string;
             const result = await firebaseAuth.signInWithEmailAndPassword(email, password);
             const { user } = result;
 
+
             if (user) {
+
                 const idTokenResult = await user.getIdTokenResult();
+
+                console.log('sending userCreate request after logging in via email and password');
+
+                await sendCreateUserRequest(idTokenResult.token);
+
+                console.log('user created (in case it did not exist earlier)');
 
                 auth.dispatch({
                     type: AuthActionType.LOGGED_IN_USER,
@@ -80,17 +135,19 @@ const LoginScreen = () => {
                         email: user.email as string,
                     }
                 });
+                auth.setLoading(false);
+                console.log(`[LOGGED_IN_USER] action dispatched from login screen.`);
 
+                // show toast notification
+                toast.success(`Logged in successfully!`);
             }
-
-            // show toast notification
-            toast.success(`Logged in successfully!`);
 
         } catch (err) {
             setLoading(false);
             console.log(err.message, ": ", err);
             toast.error(err.message);
         }
+
     }
 
     return (

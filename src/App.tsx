@@ -24,6 +24,7 @@ const App: React.FC = () => {
 
   const currentTheme = getTheme(themeState.theme, themeState.mode);
 
+
   if (authLoading) {
     return (
       <LoadingSpinner asOverlay />
