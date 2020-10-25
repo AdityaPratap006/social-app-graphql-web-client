@@ -15,6 +15,7 @@ import SettingsScreen from './screens/SettingsScreen';
 import LoadingSpinner from "./components/shared/LoadingSpinner";
 import { CustomThemeContext } from "./context/theme.context";
 import { SideDrawerProvider } from './context/sidedrawer.context';
+import ProfileScreen from "./screens/ProfileScreen";
 
 const App: React.FC = () => {
   const { state: authState, loading: authLoading } = useContext(AuthContext);
@@ -49,6 +50,9 @@ const App: React.FC = () => {
       </Route>
       <Route exact path={`${NavigationRoutes.SETTINGS}`}>
         <SettingsScreen />
+      </Route>
+      <Route exact path={`${NavigationRoutes.PROFILE}`}>
+        <ProfileScreen />
       </Route>
       <Redirect to={`${NavigationRoutes.HOME}`} />
     </Switch>

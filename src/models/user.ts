@@ -3,3 +3,19 @@ export interface IUser {
     name: string;
     email: string;
 }
+
+interface ProfileImage {
+    url: string;
+    public_id: string;
+}
+
+export interface IUserProfile {
+    _id: string;
+    name: string;
+    email: string;
+    username: string;
+    about: string;
+    createdAt: string;
+    updatedAt: string;
+    images: ProfileImage[];
+}

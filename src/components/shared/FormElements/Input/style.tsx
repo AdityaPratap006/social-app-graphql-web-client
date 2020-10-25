@@ -36,6 +36,7 @@ export const FormControl = styled.div`
         width: 100%;
         font: inherit;
         border: 1px solid #ccc;
+        border-radius: 6px;
         background: #f8f8f8;
         padding: 0.15rem 0.25rem;
 
