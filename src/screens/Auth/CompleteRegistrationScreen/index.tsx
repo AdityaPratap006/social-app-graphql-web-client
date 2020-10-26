@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { Screen, Layer, cardStyles } from './style';
 import Card from '../../../components/shared/Card';
 import Input from '../../../components/shared/FormElements/Input';
@@ -13,15 +13,7 @@ import { firebaseAuth } from '../../../utils/firebase';
 import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import { NavigationRoutes } from '../../../navigation/navRoutes';
 import { AuthActionType, AuthContext } from '../../../context/auth.context';
-
-const USER_CREATE = gql`
-    mutation userCreate($input: AuthTokenInput!) {
-        userCreate(input: $input) {
-            username,
-            email
-        }
-    }
-`;
+import { USER_CREATE } from '../../../graphql/mutations';
 
 const INITIAL_STATE: FormState = {
     inputs: {

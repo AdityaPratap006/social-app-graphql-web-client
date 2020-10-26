@@ -1,21 +1,12 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { HomeScreenContent, PostGrid } from './style';
 import { IPost } from "../../models";
 import PostCard from '../../components/post/PostCard';
 import Screen from '../../components/shared/Screen';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
-
-const GET_ALL_POSTS = gql`
-    {
-        allPosts {
-            id,
-            title,
-            description
-        }
-    }
-`;
+import { GET_ALL_POSTS } from '../../graphql/queries';
 
 const HomeScreen: React.FC = () => {
     const { data, error, loading } = useQuery<{ allPosts: IPost[] }>(GET_ALL_POSTS);

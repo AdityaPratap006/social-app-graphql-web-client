@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { ProfileScreenContent, cardStyles } from './style';
 import Screen from '../../components/shared/Screen';
 import { useForm, FormState } from '../../hooks/form.hook';
@@ -11,42 +11,8 @@ import { InputElement } from '../../models';
 import { VALIDATOR_EMAIL, VALIDATOR_REQUIRE } from '../../utils/validators';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { IUserProfile } from '../../models/user';
-
-const USER_INFO = gql`
-    fragment userInfo on User {
-        _id,
-        username,
-        name,
-        about,
-        email,
-        images {
-            url,
-            public_id,
-        },
-        createdAt,
-        updatedAt,
-    }
-`;
-
-const PROFILE = gql`
-    query {
-        profile {
-            ...userInfo
-        }
-    }
-
-    ${USER_INFO}
-`;
-
-const USER_UPDATE = gql`
-    mutation userUpdate($input: UserUpdateInput!) {
-        userUpdate(input:$input) {
-            ...userInfo
-        }
-    }
-
-    ${USER_INFO}
-`;
+import { PROFILE } from '../../graphql/queries';
+import { USER_UPDATE } from '../../graphql/mutations';
 
 interface UserUpdateAttributes {
     name: string;
