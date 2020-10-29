@@ -15,4 +15,5 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 export const firebaseAuth = firebase.auth();
+firebaseAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
 export const googleAuthProvider = new firebase.auth.GoogleAuthProvider();

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useQuery, useMutation } from '@apollo/client';
+import ImageResizer from 'react-image-file-resizer';
 import { ProfileScreenContent, cardStyles } from './style';
 import Screen from '../../components/shared/Screen';
 import { useForm, FormState } from '../../hooks/form.hook';
@@ -13,15 +14,21 @@ import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { IUserProfile } from '../../models/user';
 import { PROFILE } from '../../graphql/queries';
 import { USER_UPDATE } from '../../graphql/mutations';
+import ImageUpload from '../../components/shared/FormElements/ImageUpload';
 
 interface UserUpdateAttributes {
     name: string;
     username: string;
     about: string;
+    imageBase64String?: string;
 }
 
 const INITIAL_STATE: FormState = {
     inputs: {
+        image: {
+            value: '',
+            isValid: false,
+        },
         username: {
             value: '',
             isValid: false,
@@ -95,16 +102,34 @@ const ProfileScreen: React.FC = () => {
         }
     }
 
+    const resizeImageFile = (file: File): Promise<string> => new Promise(resolve => {
+        ImageResizer.imageFileResizer(
+            file, 300, 300, 'JPEG', 100, 0,
+            uri => {
+                resolve(uri as string);
+            },
+            'base64', 200, 200
+        );
+    });
+
     const formSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         setUpdating(true);
 
-        const { name, username, about } = formState.inputs;
+        const { name, username, about, image } = formState.inputs;
+
+        let resizedImageBase64String = await resizeImageFile(image?.value as File);
+
+        if (resizedImageBase64String === 'File Not Found') {
+            resizedImageBase64String = '';
+        }
+
         await sendUserUpdateRequest({
             name: name.value as string,
             username: username.value as string,
             about: about.value as string,
+            imageBase64String: resizedImageBase64String,
         });
 
         setUpdating(false);
@@ -121,6 +146,13 @@ const ProfileScreen: React.FC = () => {
                 {!loading && data && (
                     <Card addCSS={cardStyles}>
                         <form onSubmit={formSubmitHandler}>
+                            <ImageUpload
+                                id="image"
+                                onInput={inputChangeHandler}
+                                errorText={`Please provide an image!`}
+                                center
+                                initialImageURL={data.profile.images[0].url}
+                            />
                             <Input
                                 id="username"
                                 element={InputElement.INPUT}
