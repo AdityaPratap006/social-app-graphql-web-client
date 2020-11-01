@@ -15,3 +15,21 @@ export const USER_INFO = gql`
         updatedAt,
     }
 `;
+
+export const POST_DATA = gql`
+    fragment postData on Post {
+        _id,
+        title,
+        description,
+        createdAt,
+        updatedAt,
+        createdBy {
+            name,
+            email,
+            _id,
+            images {
+                url
+            }
+        }
+    }
+`;

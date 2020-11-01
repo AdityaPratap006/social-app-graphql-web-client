@@ -17,7 +17,7 @@ const HomeScreen: React.FC = () => {
 
     const renderedPosts = data?.allPosts.map(post => {
         return (
-            <PostCard key={post.id} post={post} />
+            <PostCard key={post._id} post={post} />
         );
     });
 
