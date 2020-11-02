@@ -1,6 +1,8 @@
-import React, { useContext } from "react";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import React, { useContext, useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
+import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import { persistCache, PersistentStorage } from 'apollo3-cache-persist';
+import localforage from 'localforage';
 import { ToastContainer } from 'react-toastify';
 import { ThemeProvider } from "styled-components";
 import HomeScreen from "./screens/HomeScreen";
@@ -17,16 +19,30 @@ import { CustomThemeContext } from "./context/theme.context";
 import { SideDrawerProvider } from './context/sidedrawer.context';
 import ProfileScreen from "./screens/ProfileScreen";
 
+const cache = new InMemoryCache();
+
+const localDB = localforage.createInstance({
+  storeName: localforage.INDEXEDDB,
+});
+
 const App: React.FC = () => {
+  const [initializngPersist, setInitializePersist] = useState(true);
   const { state: authState, loading: authLoading } = useContext(AuthContext);
   const themeValue = useContext(CustomThemeContext);
 
   const themeState = themeValue.state;
-
   const currentTheme = getTheme(themeState.theme, themeState.mode);
 
+  useEffect(() => {
+    persistCache({
+      cache,
+      storage: localDB as PersistentStorage,
+    }).then(() => {
+      setInitializePersist(false);
+    });
+  }, []);
 
-  if (authLoading) {
+  if (initializngPersist || authLoading) {
     return (
       <LoadingSpinner asOverlay />
     );
@@ -34,10 +50,10 @@ const App: React.FC = () => {
 
   const client = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
-    cache: new InMemoryCache(),
+    cache: cache,
     headers: {
       authorization: authState.user?.token || '',
-    }
+    },
   });
 
   const protectedRoutes = (
