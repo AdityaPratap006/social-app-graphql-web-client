@@ -18,8 +18,10 @@ import LoadingSpinner from "./components/shared/LoadingSpinner";
 import { CustomThemeContext } from "./context/theme.context";
 import { SideDrawerProvider } from './context/sidedrawer.context';
 import ProfileScreen from "./screens/ProfileScreen";
+import CreatePostScreen from "./screens/Posts/Create";
+import { useNetworkStatus } from './hooks/networkStatus.hook';
 
-const cache = new InMemoryCache();
+const cache = new InMemoryCache({ resultCaching: true });
 
 const localDB = localforage.createInstance({
   storeName: localforage.INDEXEDDB,
@@ -29,9 +31,24 @@ const App: React.FC = () => {
   const [initializngPersist, setInitializePersist] = useState(true);
   const { state: authState, loading: authLoading } = useContext(AuthContext);
   const themeValue = useContext(CustomThemeContext);
+  const isOnline = useNetworkStatus();
 
   const themeState = themeValue.state;
   const currentTheme = getTheme(themeState.theme, themeState.mode);
+
+  const client = new ApolloClient({
+    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    connectToDevTools: true,
+    cache: cache,
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: isOnline ? "network-only" : "cache-first",
+      },
+    },
+    headers: {
+      authorization: authState.user?.token || '',
+    },
+  });
 
   useEffect(() => {
     persistCache({
@@ -48,14 +65,6 @@ const App: React.FC = () => {
     );
   }
 
-  const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
-    cache: cache,
-    headers: {
-      authorization: authState.user?.token || '',
-    },
-  });
-
   const protectedRoutes = (
     <Switch>
       <Route exact path={`${NavigationRoutes.HOME}`} >
@@ -69,6 +78,9 @@ const App: React.FC = () => {
       </Route>
       <Route exact path={`${NavigationRoutes.PROFILE}`}>
         <ProfileScreen />
+      </Route>
+      <Route exact path={`${NavigationRoutes.POST_CREATE}`}>
+        <CreatePostScreen />
       </Route>
       <Redirect to={`${NavigationRoutes.HOME}`} />
     </Switch>

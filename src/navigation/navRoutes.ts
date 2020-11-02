@@ -9,4 +9,5 @@ export enum NavigationRoutes {
     FAMILIES = `/families`,
     NOTIFICATIONS = `/notifications`,
     LOCATE = `/locate`,
+    POST_CREATE = `/post/create`,
 }
