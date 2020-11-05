@@ -19,6 +19,7 @@ import ProfileScreen from "./screens/ProfileScreen";
 import CreatePostScreen from "./screens/Posts/Create";
 import { useNetworkStatus } from './hooks/networkStatus.hook';
 import { getApolloClient } from './utils/apollo-client';
+import { cloudMessaging } from './utils/firebase';
 
 const App: React.FC = () => {
   const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
@@ -30,7 +31,7 @@ const App: React.FC = () => {
   const currentTheme = getTheme(themeState.theme, themeState.mode);
 
   useEffect(() => {
-    if (true || authState.user) {
+    if (authState.user) {
       let unsubscribeQueueLink: () => void;
       getApolloClient({
         authorization: authState.user?.token || '',
@@ -48,6 +49,25 @@ const App: React.FC = () => {
       };
     }
   }, [authState.user, isOnline]);
+
+  useEffect(() => {
+    cloudMessaging
+      .getToken({
+        vapidKey: 'BC8TOrHSuBsDUij-uiQn1o4ULzgHRVMAhML7GcL8jFUK75FonutyRYiDPIemfqEGFd8gLCHh8wPtgGW_leM4eck',
+      })
+      .then((token) => {
+        console.log(`[firabse messaging token]: ${token}`);
+      })
+      .catch(err => {
+        console.log(`[firabse messaging error]: ${err}`);
+      });
+
+    cloudMessaging
+      .onMessage(function (payload) {
+        console.log(payload);
+        toast(`${payload.notification.title}\n${payload.notification.body}`);
+      });
+  }, []);
 
   // useEffect(() => {
   //   if (!apolloClient) return;
