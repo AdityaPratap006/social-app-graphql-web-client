@@ -11,6 +11,8 @@ import LoadingSpinner from '../../../components/shared/LoadingSpinner';
 import Input from '../../../components/shared/FormElements/Input';
 import Button from '../../../components/shared/FormElements/Button';
 import { POST_CREATE } from '../../../graphql/mutations';
+// import updateFunctions from '../../../graphql/updateFunctions';
+import { useNetworkStatus } from '../../../hooks/networkStatus.hook';
 
 interface PostCreateAttributes {
     title: string;
@@ -34,21 +36,52 @@ const INITIAL_STATE: FormState = {
 const CreatePostScreen = () => {
     const [formState, inputChangeHandler] = useForm(INITIAL_STATE);
     const [creating, setCreating] = useState(false);
-    const [postCreate] = useMutation<{ postCreate: IPost }>(POST_CREATE);
+    const isOnline = useNetworkStatus();
+    const [mutate] = useMutation<{ postCreate: IPost }>(POST_CREATE, {
+        // update: updateFunctions.postCreate,
+        // onError: (err) => {
+        //     console.log({ err });
+
+        //     toast.error(`Couldn't write to cache: ${err.message}`);
+        // },
+        // context: {
+        //     serializationKey: 'CREATE_POST',
+        //     tracked: !navigator.onLine,
+        // },
+    });
 
     const sendPostCreateRequest = async (attrs: PostCreateAttributes) => {
         try {
-            const result = await postCreate({
+            const result = await mutate({
                 variables: {
                     input: {
                         ...attrs,
                     }
-                }
+                },
+                // optimisticResponse: {
+                //     postCreate: {
+                //         _id: Date.now().toString(),
+                //         title: attrs.title,
+                //         description: attrs.description,
+                //         createdAt: Date.now().toLocaleString(),
+                //         updatedAt: Date.now().toLocaleString(),
+                //         createdBy: {
+                //             _id: '-1',
+                //             email: '',
+                //             name: '',
+                //             images: [],
+                //         },
+                //     }
+                // }
             });
             console.log(result);
             toast.success(`Post shared!`);
         } catch (error) {
-            toast.error(error.message, { autoClose: false });
+            if (!isOnline) {
+                toast.error('Network Error: You are offline!');
+            } else {
+                toast.error(`Something went wrong: ${error.message}`, { autoClose: false });
+            }
         }
     }
 

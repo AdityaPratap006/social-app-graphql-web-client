@@ -7,6 +7,8 @@ import PostCard from '../../components/post/PostCard';
 import Screen from '../../components/shared/Screen';
 import LoadingSpinner from '../../components/shared/LoadingSpinner';
 import { GET_ALL_POSTS } from '../../graphql/queries';
+import Button from "../../components/shared/FormElements/Button";
+import { NavigationRoutes } from "../../navigation/navRoutes";
 
 const HomeScreen: React.FC = () => {
     const { data, error, loading } = useQuery<{ allPosts: IPost[] }>(GET_ALL_POSTS);
@@ -26,8 +28,8 @@ const HomeScreen: React.FC = () => {
             title="home"
         >
             <HomeScreenContent>
+                <Button to={`${NavigationRoutes.POST_CREATE}`}>Share a Post</Button>
                 {loading && <LoadingSpinner asOverlay />}
-                {(!!error) && <h2>{error.name}: {error.message}</h2>}
                 <PostGrid>
                     {renderedPosts}
                 </PostGrid>

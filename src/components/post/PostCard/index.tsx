@@ -17,13 +17,15 @@ const PostCard: React.FC<PostCardProps> = (props) => {
 
     return (
         <Card>
-            <PostHeader>
-                <PostAuthorImage src={author.images[0].url} />
-                <PostAuthorDetails>
-                    <PostAuthorName>{author.name}</PostAuthorName>
-                    <PostAuthorEmail>{author.email}</PostAuthorEmail>
-                </PostAuthorDetails>
-            </PostHeader>
+            {author && (
+                <PostHeader>
+                    <PostAuthorImage src={author.images[0].url} />
+                    <PostAuthorDetails>
+                        <PostAuthorName>{author.name}</PostAuthorName>
+                        <PostAuthorEmail>{author.email}</PostAuthorEmail>
+                    </PostAuthorDetails>
+                </PostHeader>
+            )}
             <PostTitle>{title}</PostTitle>
             <PostContent>{description}</PostContent>
         </Card>

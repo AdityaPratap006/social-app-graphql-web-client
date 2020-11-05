@@ -1,9 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-import { persistCache, PersistentStorage } from 'apollo3-cache-persist';
-import localforage from 'localforage';
-import { ToastContainer } from 'react-toastify';
+import { ApolloProvider, ApolloClient, NormalizedCacheObject } from "@apollo/client";
+import { toast, ToastContainer } from 'react-toastify';
 import { ThemeProvider } from "styled-components";
 import HomeScreen from "./screens/HomeScreen";
 import { AuthContext } from './context/auth.context';
@@ -20,46 +18,51 @@ import { SideDrawerProvider } from './context/sidedrawer.context';
 import ProfileScreen from "./screens/ProfileScreen";
 import CreatePostScreen from "./screens/Posts/Create";
 import { useNetworkStatus } from './hooks/networkStatus.hook';
-
-const cache = new InMemoryCache({ resultCaching: true });
-
-const localDB = localforage.createInstance({
-  storeName: localforage.INDEXEDDB,
-});
+import { getApolloClient } from './utils/apollo-client';
 
 const App: React.FC = () => {
-  const [initializngPersist, setInitializePersist] = useState(true);
+  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
   const { state: authState, loading: authLoading } = useContext(AuthContext);
   const themeValue = useContext(CustomThemeContext);
   const isOnline = useNetworkStatus();
 
-  const themeState = themeValue.state;
+  const { state: themeState } = themeValue;
   const currentTheme = getTheme(themeState.theme, themeState.mode);
 
-  const client = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
-    connectToDevTools: true,
-    cache: cache,
-    defaultOptions: {
-      watchQuery: {
-        fetchPolicy: isOnline ? "network-only" : "cache-first",
-      },
-    },
-    headers: {
-      authorization: authState.user?.token || '',
-    },
-  });
-
   useEffect(() => {
-    persistCache({
-      cache,
-      storage: localDB as PersistentStorage,
-    }).then(() => {
-      setInitializePersist(false);
-    });
-  }, []);
+    if (true || authState.user) {
+      let unsubscribeQueueLink: () => void;
+      getApolloClient({
+        authorization: authState.user?.token || '',
+        fetchPolicy: isOnline ? "network-only" : "cache-only",
+      }).then(({ client, unsubscribeQueue }) => {
+        setApolloClient(client);
+        unsubscribeQueueLink = unsubscribeQueue;
+      }).catch((err) => {
+        toast.error(`error setting up cache: ${err}`, { autoClose: false });
+        console.log(err);
+      });
 
-  if (initializngPersist || authLoading) {
+      return () => {
+        unsubscribeQueueLink();
+      };
+    }
+  }, [authState.user, isOnline]);
+
+  // useEffect(() => {
+  //   if (!apolloClient) return;
+
+  //   executeTrackedQueries(apolloClient);
+
+  // }, [apolloClient]);
+
+  if (!apolloClient) {
+    return (
+      <h1>Setting up cache</h1>
+    )
+  }
+
+  if (authLoading) {
     return (
       <LoadingSpinner asOverlay />
     );
@@ -104,7 +107,7 @@ const App: React.FC = () => {
   return (
     <React.Fragment>
       <ToastContainer />
-      <ApolloProvider client={client}>
+      <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={currentTheme}>
           <SideDrawerProvider>
             {
