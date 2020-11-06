@@ -1,7 +1,8 @@
 import React from 'react';
-import { PostTitle, PostContent, PostHeader, PostAuthorDetails, PostAuthorImage, PostAuthorName, PostAuthorEmail } from './style';
+import { PostTitle, PostContent, PostHeader, PostAuthorDetails, PostAuthorImage, PostAuthorName, PostCreatedAt } from './style';
 import { IPost } from '../../../models';
 import Card from '../../shared/Card';
+import { getLocalDateString } from '../../../utils/date';
 
 interface PostCardProps {
     post: IPost;
@@ -12,9 +13,11 @@ const PostCard: React.FC<PostCardProps> = (props) => {
     const {
         title,
         description,
+        createdAt,
         createdBy: author,
     } = post;
 
+    const createdAtFormatted = getLocalDateString(createdAt);
     return (
         <Card>
             {author && (
@@ -22,7 +25,7 @@ const PostCard: React.FC<PostCardProps> = (props) => {
                     <PostAuthorImage src={author.images[0].url} />
                     <PostAuthorDetails>
                         <PostAuthorName>{author.name}</PostAuthorName>
-                        <PostAuthorEmail>{author.email}</PostAuthorEmail>
+                        <PostCreatedAt>{createdAtFormatted}</PostCreatedAt>
                     </PostAuthorDetails>
                 </PostHeader>
             )}

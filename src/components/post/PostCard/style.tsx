@@ -29,10 +29,11 @@ export const PostAuthorName = styled.h5`
     color: ${props => props.theme.primary};
 `;
 
-export const PostAuthorEmail = styled.small`
+export const PostCreatedAt = styled.small`
     padding: 0;
     margin: 0.2rem 0;
-    font-size: 0.8rem;
+    font-family: 'roboto';
+    font-size: 0.7rem;
     color: ${props => props.theme.text};
 `;
 
