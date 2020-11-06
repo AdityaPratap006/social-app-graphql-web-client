@@ -11,7 +11,15 @@ import Button from "../../components/shared/FormElements/Button";
 import { NavigationRoutes } from "../../navigation/navRoutes";
 
 const HomeScreen: React.FC = () => {
-    const { data, error, loading } = useQuery<{ allPosts: IPost[] }>(GET_ALL_POSTS);
+    const { data, error, loading, fetchMore } = useQuery<{ allPosts: IPost[] }>(GET_ALL_POSTS, {
+        variables: {
+            input: {
+                skip: 0,
+            },
+        },
+        fetchPolicy: "cache-and-network",
+    });
+
 
     if (error) {
         toast.error(`${error.name}: ${error.message}`);
@@ -23,6 +31,23 @@ const HomeScreen: React.FC = () => {
         );
     });
 
+    const loadMorePosts = async () => {
+        console.log(`[skip]: ${data?.allPosts.length}`);
+        await fetchMore({
+            variables: {
+                input: {
+                    skip: data?.allPosts.length,
+                },
+            },
+            updateQuery: (previous, { fetchMoreResult }) => {
+                const newData = {
+                    allPosts: fetchMoreResult ? [...previous.allPosts, ...fetchMoreResult.allPosts] : previous.allPosts,
+                };
+                return newData;
+            },
+        });
+    }
+
     return (
         <Screen
             title="home"
@@ -33,6 +58,11 @@ const HomeScreen: React.FC = () => {
                 <PostGrid>
                     {renderedPosts}
                 </PostGrid>
+                {!loading && (
+                    <Button onClick={loadMorePosts}>
+                        Load More
+                    </Button>
+                )}
             </HomeScreenContent>
         </Screen>
     );

@@ -12,8 +12,8 @@ export const PROFILE = gql`
 `;
 
 export const GET_ALL_POSTS = gql`
-    query {
-        allPosts {
+    query allPosts($input: AllPostsInput!) {
+        allPosts(input:$input) {
            ...postData
         }
     }
