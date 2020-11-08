@@ -47,6 +47,7 @@ const LoginScreen = () => {
     }, [dispatch]);
 
     const sendCreateUserRequest = async (token: string) => {
+        console.log(`[TOKEN AFTER LOGIN]: `, token);
         try {
             const result = await userCreate({
                 variables: {

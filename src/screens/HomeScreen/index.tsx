@@ -31,6 +31,7 @@ const HomeScreen: React.FC = () => {
 
     if (error) {
         toast.error(`${error.name}: ${error.message}`);
+        console.log(`[ERROR]: `, error);
     }
 
     const scrollHandler = useCallback(() => {
@@ -53,7 +54,9 @@ const HomeScreen: React.FC = () => {
         }
     }, [hasMore]);
 
-    const scrollHandlerDebounced = useCallback(_.debounce(scrollHandler, 1000), []);
+    const scrollHandlerDebounced = useCallback(_.debounce(scrollHandler, 500, {
+        maxWait: 0,
+    }), []);
 
     useEffect(() => {
 
@@ -88,11 +91,9 @@ const HomeScreen: React.FC = () => {
                 fetchMoreResult.allPosts.forEach((post) => {
                     const alreadyExists = previous.allPosts.some(prevPost => prevPost._id === post._id);
 
-                    if (alreadyExists) {
-                        return;
+                    if (!alreadyExists) {
+                        combined.push(post);
                     }
-
-                    combined.push(post);
                 });
 
                 const newData: IQueryResult = {

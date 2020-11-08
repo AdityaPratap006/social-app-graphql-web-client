@@ -7,12 +7,13 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { AuthProvider } from './context/auth.context'
 import { CustomThemeProvider } from "./context/theme.context";
-
+import { ToastContainer } from 'react-toastify';
 
 ReactDOM.render(
   <BrowserRouter>
     <AuthProvider>
       <CustomThemeProvider>
+        <ToastContainer />
         <App />
       </CustomThemeProvider>
     </AuthProvider>

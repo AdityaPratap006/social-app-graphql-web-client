@@ -1,7 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ApolloProvider, ApolloClient, NormalizedCacheObject } from "@apollo/client";
-import { toast, ToastContainer } from 'react-toastify';
+import { ApolloProvider, ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { persistCache, PersistentStorage } from 'apollo3-cache-persist';
+import { onError } from '@apollo/client/link/error';
+import localforage from 'localforage';
+import { toast } from 'react-toastify';
 import { ThemeProvider } from "styled-components";
 import HomeScreen from "./screens/HomeScreen";
 import { AuthContext } from './context/auth.context';
@@ -18,11 +21,17 @@ import { SideDrawerProvider } from './context/sidedrawer.context';
 import ProfileScreen from "./screens/ProfileScreen";
 import CreatePostScreen from "./screens/Posts/Create";
 import { useNetworkStatus } from './hooks/networkStatus.hook';
-import { getApolloClient } from './utils/apollo-client';
+// import { getApolloClient } from './utils/apollo-client';
 import { cloudMessaging } from './utils/firebase';
 
+const cache = new InMemoryCache({ resultCaching: true });
+
+const localDB = localforage.createInstance({
+  storeName: localforage.INDEXEDDB,
+});
+
 const App: React.FC = () => {
-  const [apolloClient, setApolloClient] = useState<ApolloClient<NormalizedCacheObject>>();
+  const [cacheInitializing, setCacheInitializing] = useState(true);
   const { state: authState, loading: authLoading } = useContext(AuthContext);
   const themeValue = useContext(CustomThemeContext);
   const isOnline = useNetworkStatus();
@@ -31,23 +40,17 @@ const App: React.FC = () => {
   const currentTheme = getTheme(themeState.theme, themeState.mode);
 
   useEffect(() => {
-    // let unsubscribeQueueLink: () => void;
-    getApolloClient({
-      authorization: authState.user?.token || '',
-      fetchPolicy: isOnline ? "network-only" : "cache-only",
-    }).then(({ client }) => {
-      setApolloClient(client);
-      // unsubscribeQueueLink = unsubscribeQueue;
-    }).catch((err) => {
-      toast.error(`error setting up cache: ${err}`, { autoClose: false });
-      console.log(err);
-    });
+    const initCache = async () => {
+      await persistCache({
+        cache,
+        storage: localDB as PersistentStorage,
+      });
 
-    return () => {
-      // unsubscribeQueueLink();
-    };
+      setCacheInitializing(false);
+    }
 
-  }, [authState.user, isOnline]);
+    initCache();
+  }, []);
 
   useEffect(() => {
     cloudMessaging
@@ -68,14 +71,7 @@ const App: React.FC = () => {
       });
   }, []);
 
-  // useEffect(() => {
-  //   if (!apolloClient) return;
-
-  //   executeTrackedQueries(apolloClient);
-
-  // }, [apolloClient]);
-
-  if (!apolloClient) {
+  if (cacheInitializing) {
     return (
       <h1>Setting up cache</h1>
     )
@@ -86,6 +82,40 @@ const App: React.FC = () => {
       <LoadingSpinner asOverlay />
     );
   }
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (networkError) {
+      console.log(`[Network error]: ${networkError.message}`);
+      // toast.error(`[Network error]: ${networkError.message}`);
+    }
+  });
+
+  const httpLink = new HttpLink({
+    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    headers: {
+      authorization: authState.user?.token,
+    },
+  });
+
+  const link = from([
+    errorLink,
+    httpLink,
+  ]);
+
+  const apolloClient = new ApolloClient({
+    link: link,
+    connectToDevTools: true,
+    cache: cache,
+    defaultOptions: {
+      watchQuery: {
+        fetchPolicy: isOnline ? "network-only" : "cache-only",
+        errorPolicy: "all",
+      },
+      mutate: {
+        fetchPolicy: "no-cache",
+      }
+    },
+  });
 
   const protectedRoutes = (
     <Switch>
@@ -125,7 +155,6 @@ const App: React.FC = () => {
 
   return (
     <React.Fragment>
-      <ToastContainer />
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={currentTheme}>
           <SideDrawerProvider>

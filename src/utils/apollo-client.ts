@@ -21,7 +21,6 @@ export interface ITrackedQuery {
 }
 
 export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
-    console.log(`[Attrs]: `, attrs);
     const errorLink = onError(({ graphQLErrors, networkError }) => {
         // if (graphQLErrors) {
         //   graphQLErrors.forEach(({ message, locations, path }) => {
@@ -118,7 +117,7 @@ export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
         httpLink,
     ]);
 
-    console.log(`[Initializing cache]`);
+    console.log(`[Initializing cache]`)
     const cache = new InMemoryCache({ resultCaching: true });
 
     const localDB = localforage.createInstance({
