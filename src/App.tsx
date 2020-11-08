@@ -31,23 +31,22 @@ const App: React.FC = () => {
   const currentTheme = getTheme(themeState.theme, themeState.mode);
 
   useEffect(() => {
-    if (authState.user) {
-      let unsubscribeQueueLink: () => void;
-      getApolloClient({
-        authorization: authState.user?.token || '',
-        fetchPolicy: isOnline ? "network-only" : "cache-only",
-      }).then(({ client, unsubscribeQueue }) => {
-        setApolloClient(client);
-        unsubscribeQueueLink = unsubscribeQueue;
-      }).catch((err) => {
-        toast.error(`error setting up cache: ${err}`, { autoClose: false });
-        console.log(err);
-      });
+    // let unsubscribeQueueLink: () => void;
+    getApolloClient({
+      authorization: authState.user?.token || '',
+      fetchPolicy: isOnline ? "network-only" : "cache-only",
+    }).then(({ client }) => {
+      setApolloClient(client);
+      // unsubscribeQueueLink = unsubscribeQueue;
+    }).catch((err) => {
+      toast.error(`error setting up cache: ${err}`, { autoClose: false });
+      console.log(err);
+    });
 
-      return () => {
-        unsubscribeQueueLink();
-      };
-    }
+    return () => {
+      // unsubscribeQueueLink();
+    };
+
   }, [authState.user, isOnline]);
 
   useEffect(() => {

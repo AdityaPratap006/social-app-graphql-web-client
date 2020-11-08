@@ -3,7 +3,7 @@ import { onError } from '@apollo/client/link/error';
 // import { toast } from 'react-toastify';
 import localforage from 'localforage';
 import { persistCache, PersistentStorage } from 'apollo3-cache-persist';
-import QueueLink from 'apollo-link-queue';
+// import QueueLink from 'apollo-link-queue';
 // import SerializingLink from 'apollo-link-serialize';
 // import { RetryLink } from 'apollo-link-retry';
 // import updateFunctions from '../graphql/updateFunctions';
@@ -21,6 +21,7 @@ export interface ITrackedQuery {
 }
 
 export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
+    console.log(`[Attrs]: `, attrs);
     const errorLink = onError(({ graphQLErrors, networkError }) => {
         // if (graphQLErrors) {
         //   graphQLErrors.forEach(({ message, locations, path }) => {
@@ -34,7 +35,7 @@ export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
         // }
 
         if (networkError) {
-            console.log(`[Network error]: ${networkError}`);
+            console.log(`[Network error]: ${networkError.message}`);
             // toast.error(`[Network error]: ${networkError}`);
         }
     });
@@ -48,17 +49,17 @@ export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
 
     // const retryLink = new RetryLink({ attempts: { max: Infinity } })
 
-    const queueLink = new QueueLink();
+    // const queueLink = new QueueLink();
 
-    const openQueueLink = () => queueLink.open();
-    const closeQueueLink = () => queueLink.close();
-    window.addEventListener('offline', closeQueueLink);
-    window.addEventListener('online', () => openQueueLink);
+    // const openQueueLink = () => queueLink.open();
+    // const closeQueueLink = () => queueLink.close();
+    // window.addEventListener('offline', closeQueueLink);
+    // window.addEventListener('online', () => openQueueLink);
 
-    const unsubscribeQueue = () => {
-        window.removeEventListener('offline', closeQueueLink);
-        window.removeEventListener('online', openQueueLink);
-    }
+    // const unsubscribeQueue = () => {
+    //     window.removeEventListener('offline', closeQueueLink);
+    //     window.removeEventListener('online', openQueueLink);
+    // }
 
     // const serializingLink = new SerializingLink();
 
@@ -117,17 +118,20 @@ export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
         httpLink,
     ]);
 
+    console.log(`[Initializing cache]`);
     const cache = new InMemoryCache({ resultCaching: true });
 
     const localDB = localforage.createInstance({
         storeName: localforage.INDEXEDDB,
     });
 
+    console.log(`[persisting cache]`);
     await persistCache({
         cache,
         storage: localDB as PersistentStorage,
     });
 
+    console.log(`[Initializing apollo client]`);
     const client = new ApolloClient({
         link: link,
         connectToDevTools: true,
@@ -143,7 +147,7 @@ export const getApolloClient = async (attrs: ApolloClientConfigAttributes) => {
         },
     });
 
-    return { client, unsubscribeQueue };
+    return { client, /*unsubscribeQueue*/ };
 }
 
 // export const executeTrackedQueries = async (apolloClient: ApolloClient<NormalizedCacheObject>) => {
