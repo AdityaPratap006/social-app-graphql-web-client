@@ -1,8 +1,10 @@
 import React, { useContext, useState, useEffect } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ApolloProvider, ApolloClient, from, HttpLink, InMemoryCache } from "@apollo/client";
+import { ApolloProvider, ApolloClient, from, HttpLink, InMemoryCache, split } from "@apollo/client";
 import { persistCache, PersistentStorage } from 'apollo3-cache-persist';
 import { onError } from '@apollo/client/link/error';
+import { WebSocketLink } from '@apollo/client/link/ws';
+import { getMainDefinition } from '@apollo/client/utilities';
 import localforage from 'localforage';
 import { toast } from 'react-toastify';
 import { ThemeProvider } from "styled-components";
@@ -91,15 +93,37 @@ const App: React.FC = () => {
   });
 
   const httpLink = new HttpLink({
-    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT as string,
     headers: {
       authorization: authState.user?.token,
     },
   });
 
+  const wsLink = new WebSocketLink({
+    uri: process.env.REACT_APP_GRAPHQL_WEBSOCKET_URL as string,
+    options: {
+      reconnect: true,
+      connectionParams: {
+        authorization: authState.user?.token,
+      },
+    }
+  });
+
+  const splitLink = split(
+    ({ query }) => {
+      const definition = getMainDefinition(query);
+      return (
+        definition.kind === 'OperationDefinition' &&
+        definition.operation === 'subscription'
+      );
+    },
+    wsLink,
+    httpLink,
+  );
+
   const link = from([
     errorLink,
-    httpLink,
+    splitLink,
   ]);
 
   const apolloClient = new ApolloClient({
@@ -113,7 +137,7 @@ const App: React.FC = () => {
       },
       mutate: {
         fetchPolicy: "no-cache",
-      }
+      },
     },
   });
 

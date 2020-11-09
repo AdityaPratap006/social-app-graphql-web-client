@@ -138,7 +138,7 @@ const HomeScreen: React.FC = () => {
                 <PostGrid ref={postGridRef}>
                     {renderedPosts}
                 </PostGrid>
-                {!loading && hasMore && <LoadingSpinner />}
+                {!error && !loading && hasMore && <LoadingSpinner />}
             </HomeScreenContent>
         </Screen>
     );
