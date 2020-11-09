@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import { useQuery } from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import _ from 'lodash';
 import { HomeScreenContent, PostGrid } from './style';
 import { IPost } from "../../models";
@@ -16,14 +16,40 @@ interface IQueryResult {
     totalPosts: number;
 }
 
+interface IPostAddedResult {
+    onPostAdded: IPost;
+}
+
+const POST_ADDED_SUBSCRIPTION = gql`
+     subscription {
+        onPostAdded {
+            _id,
+            title,
+            description,
+            createdAt,
+            updatedAt,
+            createdBy {
+                name,
+                email,
+                _id,
+                images {
+                    url,
+                }
+            }
+        }
+    }
+`;
+
 const HomeScreen: React.FC = () => {
-    const { data, error, loading, fetchMore } = useQuery<IQueryResult>(GET_ALL_POSTS, {
+    const { data, error, loading, fetchMore, subscribeToMore } = useQuery<IQueryResult>(GET_ALL_POSTS, {
         variables: {
             input: {
                 skip: 0,
             },
         },
     });
+
+    // const postSubscription = useSubscription<IPostAddedResult>(POST_ADDED_SUBSCRIPTION);
 
     const [reachedBottom, setReachedBottom] = useState(false);
     const [hasMore, setHasMore] = useState(true);
@@ -33,6 +59,23 @@ const HomeScreen: React.FC = () => {
         toast.error(`${error.name}: ${error.message}`);
         console.log(`[ERROR]: `, error);
     }
+
+    useEffect(() => {
+        subscribeToMore<IPostAddedResult>({
+            document: POST_ADDED_SUBSCRIPTION,
+            updateQuery: (prev, { subscriptionData }) => {
+                if (!subscriptionData.data) {
+                    return prev;
+                }
+
+                const newPost = subscriptionData.data.onPostAdded;
+                return {
+                    totalPosts: prev.totalPosts + 1,
+                    allPosts: [newPost, ...prev.allPosts],
+                }
+            }
+        });
+    }, [subscribeToMore]);
 
     const scrollHandler = useCallback(() => {
         if (!postGridRef.current) {
