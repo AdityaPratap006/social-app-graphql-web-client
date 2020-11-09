@@ -25,6 +25,7 @@ import CreatePostScreen from "./screens/Posts/Create";
 import { useNetworkStatus } from './hooks/networkStatus.hook';
 // import { getApolloClient } from './utils/apollo-client';
 import { cloudMessaging } from './utils/firebase';
+import RequestNotification from './components/shared/RequestNotification';
 
 const cache = new InMemoryCache({ resultCaching: true });
 
@@ -37,6 +38,7 @@ const App: React.FC = () => {
   const { state: authState, loading: authLoading } = useContext(AuthContext);
   const themeValue = useContext(CustomThemeContext);
   const isOnline = useNetworkStatus();
+
 
   const { state: themeState } = themeValue;
   const currentTheme = getTheme(themeState.theme, themeState.mode);
@@ -56,20 +58,15 @@ const App: React.FC = () => {
 
   useEffect(() => {
     cloudMessaging
-      .getToken({
-        vapidKey: 'BC8TOrHSuBsDUij-uiQn1o4ULzgHRVMAhML7GcL8jFUK75FonutyRYiDPIemfqEGFd8gLCHh8wPtgGW_leM4eck',
-      })
-      .then((token) => {
-        console.log(`[firabse messaging token]: ${token}`);
-      })
-      .catch(err => {
-        console.log(`[firabse messaging error]: ${err}`);
-      });
-
-    cloudMessaging
       .onMessage(function (payload) {
         console.log(payload);
-        toast(`${payload.notification.title}\n${payload.notification.body}`);
+        if (payload.notification) {
+          toast(`${payload.notification.title}\n${payload.notification.body}`);
+        }
+
+        if (payload.data) {
+          toast(`${payload.data.title}\n${payload.data.body}`);
+        }
       });
   }, []);
 
@@ -181,6 +178,7 @@ const App: React.FC = () => {
     <React.Fragment>
       <ApolloProvider client={apolloClient}>
         <ThemeProvider theme={currentTheme}>
+          <RequestNotification />
           <SideDrawerProvider>
             {
               authState.user

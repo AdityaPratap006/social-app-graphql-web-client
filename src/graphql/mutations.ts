@@ -29,3 +29,11 @@ export const POST_CREATE = gql`
 
     ${POST_DATA}
 `;
+
+export const SAVE_FCM_TOKEN = gql`
+    mutation saveFcmToken($input: SaveFcmTokenInput!) {
+        saveFcmToken(input: $input) {
+            message
+        }
+    }
+`;
